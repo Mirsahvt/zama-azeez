@@ -236,7 +236,7 @@ export function PhotoGallery({ language }: PhotoGalleryProps) {
                 }}
               >
                 <Image
-                  src="/images/groom.png"
+                  src="/images/groom.jpeg"
                   alt="Groom portrait"
                   fill
                   priority
@@ -270,7 +270,7 @@ export function PhotoGallery({ language }: PhotoGalleryProps) {
                 }}
               >
                 <Image
-                  src="/images/bride.png"
+                  src="/images/bride.jpeg"
                   alt="Bride portrait"
                   fill
                   className="object-cover"

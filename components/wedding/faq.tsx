@@ -26,12 +26,7 @@ export function FAQ({ language }: FAQProps) {
           answer:
             "Guests are welcome to wear any elegant color that beautifully complements the Groom. For men, Mundu and Kurta will be especially appreciated.",
         },
-        {
-          icon: Cross,
-          question: "Can children attend?",
-          answer:
-            "Yes, children are warmly welcome to be part of our celebration. We would be happy to have families join us on this joyful day.",
-        },
+        
         {
           icon: HeartHandshake,
           question: "What time should I arrive?",

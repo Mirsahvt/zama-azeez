@@ -18,21 +18,10 @@ interface EventsProps {
 export function Events({ language }: EventsProps) {
   const content = {
     EN: {
-      title: "Wedding Celebrations",
+      title: "Wedding Celebration",
       subtitle:
-        "With love, grace, and joy in Christ, we invite you to celebrate these beautiful moments with us.",
+        "We warmly invite you to celebrate these beautiful moments with us and make the day even more special with your presence.",
       events: [
-        {
-          icon: Sparkles,
-          title: "Betrothal Eve",
-          date: "29 April 2026",
-          time: "5:30 PM",
-          location: "Sacred Heart Church, Angadikadavu",
-          venue: "Bride Side Celebration",
-          description:
-            "A beautiful evening of family prayers, love, and blessings as we begin our sacred celebration together.",
-          image: "/images/betrothal-eve.jpg",
-        },
         {
           icon: Heart,
           title: "Betrothal",
@@ -52,17 +41,15 @@ export function Events({ language }: EventsProps) {
           location: "St Mary's Church, Mylampully",
           venue: "Galaxy Events Complex, Mylampully",
           description:
-            "By the grace of God, we joyfully invite you to witness our wedding ceremony followed by lunch and reception.",
+            "We joyfully invite you to witness our wedding ceremony followed by lunch and reception.",
           image: "/images/wedding.jpg",
         },
       ],
-      quote:
-        '"Therefore what God has joined together, let no one separate." — Mark 10:9',
     },
     ES: {
       title: "Wedding Celebrations",
       subtitle:
-        "With love, grace, and joy in Christ, we invite you to celebrate these beautiful moments with us.",
+        "We warmly invite you to celebrate these beautiful moments with us and make the day even more special with your presence.",
       events: [
         {
           icon: Sparkles,
@@ -72,7 +59,7 @@ export function Events({ language }: EventsProps) {
           location: "Sacred Heart Church, Angadikadavu",
           venue: "Bride Side Celebration",
           description:
-            "A beautiful evening of family prayers, love, and blessings as we begin our sacred celebration together.",
+            "A beautiful evening of family gathering, love, and togetherness as the celebrations begin.",
           image: "/images/betrothal-eve.jpg",
         },
         {
@@ -94,16 +81,14 @@ export function Events({ language }: EventsProps) {
           location: "St Mary's Church, Mylampully",
           venue: "Galaxy Events Complex, Mylampully",
           description:
-            "By the grace of God, we joyfully invite you to witness our wedding ceremony followed by lunch and reception.",
+            "We joyfully invite you to witness our wedding ceremony followed by lunch and reception.",
           image: "/images/wedding.jpg",
         },
       ],
-      quote:
-        '"Therefore what God has joined together, let no one separate." — Mark 10:9',
     },
   }
 
-  const { title, subtitle, events, quote } = content[language]
+  const { title, subtitle, events } = content[language]
 
   return (
     <section
@@ -114,7 +99,6 @@ export function Events({ language }: EventsProps) {
           "linear-gradient(180deg, #f8dce7 0%, #f5d2df 14%, #f0d3dc 28%, #47293a 54%, #2f1926 72%, #f3d8e2 100%)",
       }}
     >
-      {/* dreamy blush background */}
       <div className="pointer-events-none absolute inset-0 overflow-hidden">
         <div className="absolute inset-x-0 top-0 h-40 bg-gradient-to-b from-[#ffeaf2]/90 via-[#f8dce7]/55 to-transparent" />
         <div className="absolute left-[6%] top-10 h-72 w-72 rounded-full bg-[#ffd7e5]/30 blur-3xl" />
@@ -295,29 +279,6 @@ export function Events({ language }: EventsProps) {
             )
           })}
         </div>
-
-        <motion.div
-          className="mx-auto mt-14 max-w-4xl md:mt-20"
-          initial={{ opacity: 0, y: 30, filter: "blur(8px)" }}
-          whileInView={{ opacity: 1, y: 0, filter: "blur(0px)" }}
-          viewport={{ once: true, margin: "-60px" }}
-          transition={{ duration: 0.9, ease: [0.22, 1, 0.36, 1] }}
-        >
-          <div className="relative overflow-hidden rounded-[2rem] border border-white/20 bg-white/10 px-6 py-7 text-center shadow-[0_24px_70px_rgba(24,10,18,0.18)] backdrop-blur-xl md:px-10">
-            <div className="absolute inset-0 bg-[linear-gradient(135deg,rgba(255,255,255,0.16),rgba(255,255,255,0.03)_35%,transparent_65%)]" />
-            <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-[#efc6d7]/70 to-transparent" />
-            <p
-              className="relative text-lg italic text-white/88 md:text-[1.3rem]"
-              style={{
-                fontFamily: '"Cormorant Garamond", serif',
-                lineHeight: 1.7,
-                textShadow: "0 2px 12px rgba(0,0,0,0.14)",
-              }}
-            >
-              {quote}
-            </p>
-          </div>
-        </motion.div>
       </div>
     </section>
   )

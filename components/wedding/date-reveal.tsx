@@ -79,29 +79,40 @@ function ScratchTile({ value, delay = 0, onReveal }: ScratchTileProps) {
       ctx.clearRect(0, 0, width, height)
 
       const gradient = ctx.createLinearGradient(0, 0, width, height)
-      gradient.addColorStop(0, "#fafafa")
-      gradient.addColorStop(0.15, "#d9d9d9")
-      gradient.addColorStop(0.34, "#f2f2f2")
-      gradient.addColorStop(0.56, "#bdbdbd")
-      gradient.addColorStop(0.78, "#ececec")
-      gradient.addColorStop(1, "#cfcfcf")
+      gradient.addColorStop(0, "#fff6e9")
+      gradient.addColorStop(0.18, "#f6e2bf")
+      gradient.addColorStop(0.36, "#ddb784")
+      gradient.addColorStop(0.52, "#f4d7a8")
+      gradient.addColorStop(0.74, "#b8874f")
+      gradient.addColorStop(1, "#f8e6c8")
 
       ctx.fillStyle = gradient
       ctx.fillRect(0, 0, width, height)
 
       const sheen = ctx.createLinearGradient(0, 0, width, height)
-      sheen.addColorStop(0, "rgba(255,255,255,0.32)")
-      sheen.addColorStop(0.2, "rgba(255,255,255,0.08)")
+      sheen.addColorStop(0, "rgba(255,255,255,0.34)")
+      sheen.addColorStop(0.24, "rgba(255,255,255,0.1)")
       sheen.addColorStop(0.5, "rgba(255,255,255,0)")
-      sheen.addColorStop(0.82, "rgba(255,255,255,0.18)")
-      sheen.addColorStop(1, "rgba(255,255,255,0.04)")
+      sheen.addColorStop(0.78, "rgba(255,255,255,0.2)")
+      sheen.addColorStop(1, "rgba(255,255,255,0.06)")
       ctx.fillStyle = sheen
+      ctx.fillRect(0, 0, width, height)
+
+      const shimmer = ctx.createLinearGradient(0, 0, width, 0)
+      shimmer.addColorStop(0, "rgba(255,255,255,0)")
+      shimmer.addColorStop(0.18, "rgba(255,255,255,0.04)")
+      shimmer.addColorStop(0.42, "rgba(255,255,255,0.42)")
+      shimmer.addColorStop(0.5, "rgba(255,255,255,0.88)")
+      shimmer.addColorStop(0.58, "rgba(255,255,255,0.42)")
+      shimmer.addColorStop(0.82, "rgba(255,255,255,0.04)")
+      shimmer.addColorStop(1, "rgba(255,255,255,0)")
+      ctx.fillStyle = shimmer
       ctx.fillRect(0, 0, width, height)
 
       for (let i = 0; i < 10; i++) {
         const y = (height / 10) * i
         ctx.strokeStyle =
-          i % 2 === 0 ? "rgba(255,255,255,0.16)" : "rgba(90,90,90,0.08)"
+          i % 2 === 0 ? "rgba(255,255,255,0.14)" : "rgba(128,92,58,0.08)"
         ctx.lineWidth = 1
         ctx.beginPath()
         ctx.moveTo(0, y)
@@ -109,13 +120,13 @@ function ScratchTile({ value, delay = 0, onReveal }: ScratchTileProps) {
         ctx.stroke()
       }
 
-      for (let i = 0; i < 50; i++) {
-        ctx.fillStyle = `rgba(255,255,255,${Math.random() * 0.14})`
+      for (let i = 0; i < 60; i++) {
+        ctx.fillStyle = `rgba(255,255,255,${Math.random() * 0.16})`
         ctx.beginPath()
         ctx.arc(
           Math.random() * width,
           Math.random() * height,
-          Math.random() * 1.1 + 0.3,
+          Math.random() * 1.2 + 0.25,
           0,
           Math.PI * 2
         )
@@ -124,7 +135,7 @@ function ScratchTile({ value, delay = 0, onReveal }: ScratchTileProps) {
 
       ctx.textAlign = "center"
       ctx.textBaseline = "middle"
-      ctx.fillStyle = "rgba(72,72,72,0.92)"
+      ctx.fillStyle = "rgba(122,86,57,0.88)"
       ctx.font = '700 13px "Cormorant Garamond", Georgia, serif'
       ctx.fillText("Scratch", width / 2, height / 2)
 
@@ -261,14 +272,14 @@ function ScratchTile({ value, delay = 0, onReveal }: ScratchTileProps) {
     >
       <div
         ref={wrapperRef}
-        className="relative h-[92px] w-[92px] overflow-hidden rounded-[1.4rem] border border-white/70 bg-gradient-to-br from-[#fff8f5] via-[#fdeaf1] to-[#f7c6d9] shadow-[0_18px_55px_rgba(183,110,121,0.18)] backdrop-blur-xl sm:h-[110px] sm:w-[110px] md:h-[120px] md:w-[120px]"
+        className="relative h-[92px] w-[92px] overflow-hidden rounded-[1.4rem] border border-[#f7eadc]/80 bg-gradient-to-br from-[#fffaf7] via-[#f8e9e3] to-[#f2d9dd] shadow-[0_18px_55px_rgba(183,110,121,0.16)] backdrop-blur-xl sm:h-[110px] sm:w-[110px] md:h-[120px] md:w-[120px]"
       >
         <div className="absolute inset-0 rounded-[1.4rem] bg-[radial-gradient(circle_at_top,rgba(255,255,255,0.42),transparent_42%)]" />
-        <div className="absolute inset-0 rounded-[1.4rem] border border-[#f5dfe5]/80" />
+        <div className="absolute inset-0 rounded-[1.4rem] border border-[#f3dfdf]/80" />
 
-        <div className="absolute inset-0 flex items-center justify-center">
+        <div className="absolute inset-0 flex items-center justify-center bg-[radial-gradient(circle_at_center,rgba(255,255,255,0.35),transparent_70%)]">
           <motion.span
-            className="font-serif text-[26px] font-bold tracking-[0.08em] text-[#111111] sm:text-[30px] md:text-[34px]"
+            className="text-[26px] font-bold tracking-[0.08em] text-[#5f473c] sm:text-[30px] md:text-[34px]"
             style={{
               fontFamily: '"Playfair Display", "Cormorant Garamond", serif',
               textShadow: revealed
@@ -337,7 +348,7 @@ function ScratchTile({ value, delay = 0, onReveal }: ScratchTileProps) {
             powderBits.map((bit) => (
               <motion.div
                 key={bit.id}
-                className="absolute h-1 w-1 rounded-full bg-white/80"
+                className="absolute h-1 w-1 rounded-full bg-[#fff4dd]/90"
                 style={{ left: bit.left, top: bit.top }}
                 initial={{ opacity: 0.9, x: 0, y: 0, scale: 1 }}
                 animate={{
@@ -363,7 +374,7 @@ function ScratchTile({ value, delay = 0, onReveal }: ScratchTileProps) {
                   className="absolute left-1/2 top-1/2 h-1.5 w-1.5 rounded-full"
                   style={{
                     background:
-                      i % 3 === 0 ? "#ffffff" : i % 3 === 1 ? "#d1d1d1" : "#f7c6d9",
+                      i % 3 === 0 ? "#ffffff" : i % 3 === 1 ? "#f0dcc6" : "#e8bd8b",
                   }}
                   initial={{ opacity: 1, x: 0, y: 0, scale: 1 }}
                   animate={{
@@ -424,14 +435,14 @@ export function DateReveal({ language }: DateRevealProps) {
 
   return (
     <section
-      className="relative overflow-hidden py-24"
+      className="relative overflow-hidden py-24 md:py-28"
       style={{
         background: `linear-gradient(
           to bottom,
-          #151111 0%,
-          #241b1e 10%,
-          #38292e 18%,
-          #523942 28%,
+          #0e0b0c 0%,
+          #1a1416 10%,
+          #2c2023 18%,
+          #4a353b 28%,
           #7c5a64 42%,
           #b98294 58%,
           #e7bcc9 76%,
@@ -440,10 +451,11 @@ export function DateReveal({ language }: DateRevealProps) {
       }}
     >
       <div className="pointer-events-none absolute inset-0">
-        <div className="absolute inset-x-0 top-0 h-[18%] bg-gradient-to-b from-black/20 via-black/8 to-transparent" />
-        <div className="absolute left-[10%] top-20 h-80 w-80 rounded-full bg-[#ffdbe6]/22 blur-[120px]" />
-        <div className="absolute right-[10%] bottom-16 h-96 w-96 rounded-full bg-[#f7c6d9]/28 blur-[120px]" />
-        <div className="absolute left-1/2 top-1/2 h-[420px] w-[420px] -translate-x-1/2 -translate-y-1/2 rounded-full bg-white/16 blur-[140px]" />
+        <div className="absolute inset-x-0 top-0 h-[22%] bg-gradient-to-b from-black/30 via-black/10 to-transparent" />
+        <div className="absolute left-[10%] top-20 h-80 w-80 rounded-full bg-[#f7d8df]/12 blur-[120px]" />
+        <div className="absolute right-[10%] bottom-16 h-96 w-96 rounded-full bg-[#efd7d2]/18 blur-[120px]" />
+        <div className="absolute left-1/2 top-1/2 h-[420px] w-[420px] -translate-x-1/2 -translate-y-1/2 rounded-full bg-white/8 blur-[140px]" />
+        <div className="absolute left-1/2 top-[42%] h-[560px] w-[560px] -translate-x-1/2 -translate-y-1/2 rounded-full bg-[radial-gradient(circle,rgba(255,248,240,0.2)_0%,rgba(255,239,226,0.12)_34%,rgba(245,221,216,0.06)_56%,transparent_76%)] blur-[120px]" />
       </div>
 
       <div className="container relative z-10 mx-auto px-4">
@@ -455,18 +467,19 @@ export function DateReveal({ language }: DateRevealProps) {
           transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
         >
           <div className="mb-5 flex items-center justify-center gap-3">
-            <div className="h-px w-14 bg-gradient-to-r from-transparent via-white/80 to-transparent" />
-            <div className="h-2.5 w-2.5 rotate-45 border border-white/70 bg-white/40" />
-            <div className="h-px w-14 bg-gradient-to-r from-transparent via-white/80 to-transparent" />
+            <div className="h-px w-14 bg-gradient-to-r from-transparent via-[#d8b188] to-transparent" />
+            <div className="h-2.5 w-2.5 rotate-45 border border-[#e2bb91] bg-[#f8e9d7]" />
+            <div className="h-px w-14 bg-gradient-to-r from-transparent via-[#d8b188] to-transparent" />
           </div>
 
           <h2
-            className="mb-3 text-4xl text-white md:text-5xl"
+            className="mb-3 text-4xl md:text-5xl"
             style={{
-              fontFamily: 'var(--font-script), cursive',
+              fontFamily: '"Great Vibes", cursive',
+              color: "#fff5f1",
               textShadow: `
-                0 1px 0 rgba(255,255,255,0.22),
-                0 3px 12px rgba(0,0,0,0.20)
+                0 0 10px rgba(255,220,200,0.25),
+                0 3px 12px rgba(0,0,0,0.35)
               `,
             }}
           >
@@ -474,9 +487,10 @@ export function DateReveal({ language }: DateRevealProps) {
           </h2>
 
           <p
-            className="mx-auto max-w-xl text-sm leading-relaxed text-white/85 md:text-base"
+            className="mx-auto max-w-xl text-sm leading-relaxed md:text-base"
             style={{
-              textShadow: "0 1px 0 rgba(0,0,0,0.18)",
+              color: "rgba(255,240,235,0.85)",
+              textShadow: "0 2px 10px rgba(0,0,0,0.28)",
             }}
           >
             {subtitle}
@@ -484,14 +498,15 @@ export function DateReveal({ language }: DateRevealProps) {
         </motion.div>
 
         <div className="mx-auto max-w-5xl">
-          <div className="relative overflow-hidden rounded-[2.2rem] border border-white/55 bg-gradient-to-br from-[#fff8f5]/88 via-[#fdeaf1]/88 to-[#f7c6d9]/72 px-6 py-10 shadow-[0_28px_80px_rgba(183,110,121,0.20)] backdrop-blur-2xl md:px-10 md:py-12">
-            <div className="absolute inset-0 bg-[linear-gradient(135deg,rgba(255,255,255,0.20),rgba(255,255,255,0.02)_36%,transparent_60%)]" />
-            <div className="absolute inset-0 bg-[radial-gradient(circle_at_top,rgba(255,255,255,0.28),transparent_38%)]" />
+          <div className="relative overflow-hidden rounded-[2.2rem] border border-white/20 bg-gradient-to-br from-[#fffaf7]/18 via-[#f8e9e3]/14 to-[#f2d9dd]/12 px-6 py-10 shadow-[0_28px_80px_rgba(0,0,0,0.24)] backdrop-blur-2xl md:px-10 md:py-12">
+            <div className="absolute inset-0 bg-[linear-gradient(135deg,rgba(255,255,255,0.14),rgba(255,255,255,0.03)_36%,transparent_60%)]" />
+            <div className="absolute inset-0 bg-[radial-gradient(circle_at_top,rgba(255,255,255,0.12),transparent_38%)]" />
+            <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(255,250,244,0.22)_0%,rgba(255,240,226,0.1)_34%,transparent_72%)]" />
 
-            <div className="absolute left-4 top-4 h-8 w-8 rounded-tl-xl border-l border-t border-white/60" />
-            <div className="absolute right-4 top-4 h-8 w-8 rounded-tr-xl border-r border-t border-white/60" />
-            <div className="absolute bottom-4 left-4 h-8 w-8 rounded-bl-xl border-b border-l border-white/60" />
-            <div className="absolute bottom-4 right-4 h-8 w-8 rounded-br-xl border-b border-r border-white/60" />
+            <div className="absolute left-4 top-4 h-8 w-8 rounded-tl-xl border-l border-t border-white/22" />
+            <div className="absolute right-4 top-4 h-8 w-8 rounded-tr-xl border-r border-t border-white/22" />
+            <div className="absolute bottom-4 left-4 h-8 w-8 rounded-bl-xl border-b border-l border-white/22" />
+            <div className="absolute bottom-4 right-4 h-8 w-8 rounded-br-xl border-b border-r border-white/22" />
 
             <div className="relative flex flex-row items-center justify-center gap-3 sm:gap-5 md:gap-7">
               <ScratchTile value={day} delay={0} onReveal={handleReveal} />
@@ -509,17 +524,16 @@ export function DateReveal({ language }: DateRevealProps) {
                   transition={{ duration: 0.8 }}
                 >
                   <p
-                    className="text-[#4a3a34]"
                     style={{
+                      color: "rgba(255,243,237,0.95)",
                       fontFamily: '"Cormorant Garamond", serif',
                       fontSize: "clamp(20px, 2.2vw, 28px)",
                       fontStyle: "italic",
                       fontWeight: 500,
                       lineHeight: 1.5,
                       textShadow: `
-                        0 1px 0 rgba(255,255,255,0.9),
-                        0 2px 0 rgba(255,255,255,0.55),
-                        0 8px 18px rgba(121, 88, 71, 0.18)
+                        0 1px 0 rgba(255,255,255,0.14),
+                        0 2px 14px rgba(0,0,0,0.28)
                       `,
                       letterSpacing: "0.01em",
                     }}
