@@ -1,7 +1,7 @@
 "use client"
 
 import { motion } from "framer-motion"
-import { useRef } from "react"
+import { useMemo, useRef } from "react"
 import { Heart, Users, Video, Plane, Sparkles } from "lucide-react"
 
 interface OurStoryProps {
@@ -14,97 +14,119 @@ function vibrateSoft(pattern: number | number[] = 8) {
   }
 }
 
+const CARD_STYLE = {
+  background:
+    "linear-gradient(180deg, rgba(255,255,255,0.34) 0%, rgba(255,255,255,0.18) 100%)",
+  WebkitBackdropFilter: "blur(18px) saturate(160%)",
+  backdropFilter: "blur(18px) saturate(160%)",
+  boxShadow:
+    "0 18px 60px rgba(103,83,67,0.10), inset 0 1px 0 rgba(255,255,255,0.65)",
+} as const
+
+const INTRO_STYLE = {
+  background:
+    "linear-gradient(180deg, rgba(255,255,255,0.34) 0%, rgba(255,255,255,0.18) 100%)",
+  WebkitBackdropFilter: "blur(18px) saturate(160%)",
+  backdropFilter: "blur(18px) saturate(160%)",
+  boxShadow:
+    "0 20px 60px rgba(110,87,73,0.10), inset 0 1px 0 rgba(255,255,255,0.62)",
+} as const
+
 export function OurStory({ language }: OurStoryProps) {
   const containerRef = useRef<HTMLDivElement>(null)
+  const vibratedRef = useRef<Record<string, boolean>>({})
 
-  const content = {
-    EN: {
-      title: "Our Story",
-      subtitle: "From a simple introduction to a beautiful promise",
-      intro:
-        "What started as a simple matrimony profile slowly unfolded into a story guided by faith, family, and a beautiful beginning.",
-      stories: [
-        {
-          icon: Users,
-          number: "01",
-          title: "A Simple Beginning",
-          description:
-            "It all began with a simple profile on a matrimony website. Among many profiles and possibilities, Stebin and Jesna were just two names in the crowd—unaware that their lives were about to intertwine in a beautiful way.",
-        },
-        {
-          icon: Heart,
-          number: "02",
-          title: "A First Connection",
-          description:
-            "Their conversations began gently. Messages turned into smiles across screens, and slowly curiosity grew into comfort as they started to know each other better.",
-        },
-        {
-          icon: Video,
-          number: "03",
-          title: "The First Meeting",
-          description:
-            "One day, Stebin travelled to Ernakulam to meet Jesna for the very first time. It wasn’t a dramatic moment—just two people sitting across from each other. Yet somehow it felt calm, familiar, and quietly meaningful.",
-        },
-        {
-          icon: Plane,
-          number: "04",
-          title: "Families Came Together",
-          description:
-            "Soon their families stepped in. Stebin’s parents visited Jesna’s home in Kannur, where conversations flowed naturally and hearts slowly aligned. What began as a formal visit started feeling like something more special.",
-        },
-        {
-          icon: Sparkles,
-          number: "05",
-          title: "A Beautiful Decision",
-          description:
-            "Later, Jesna’s family came to meet Stebin. Amid laughter, tea, and warm conversations, a beautiful decision was made—the wedding was fixed. What began as an arranged meeting slowly turned into a story that feels a little like love.",
-        },
-      ],
-    },
-    ES: {
-      title: "Nuestra Historia",
-      subtitle: "De una simple presentación a una hermosa promesa",
-      intro:
-        "Lo que comenzó como un simple perfil matrimonial poco a poco se convirtió en una historia guiada por la fe, la familia y un hermoso comienzo.",
-      stories: [
-        {
-          icon: Users,
-          number: "01",
-          title: "Un Comienzo Sencillo",
-          description:
-            "Todo comenzó con un simple perfil en un sitio matrimonial. Entre muchos perfiles y posibilidades, Stebin y Jesna eran solo dos nombres entre la multitud, sin saber que sus vidas pronto se entrelazarían de una manera hermosa.",
-        },
-        {
-          icon: Heart,
-          number: "02",
-          title: "Una Primera Conexión",
-          description:
-            "Sus conversaciones comenzaron suavemente. Los mensajes se convirtieron en sonrisas a través de las pantallas, y poco a poco la curiosidad se transformó en comodidad mientras empezaban a conocerse mejor.",
-        },
-        {
-          icon: Video,
-          number: "03",
-          title: "El Primer Encuentro",
-          description:
-            "Un día, Stebin viajó a Ernakulam para conocer a Jesna por primera vez. No fue un momento dramático, solo dos personas sentadas frente a frente. Sin embargo, de algún modo se sintió tranquilo, familiar y profundamente especial.",
-        },
-        {
-          icon: Plane,
-          number: "04",
-          title: "Las Familias se Unieron",
-          description:
-            "Pronto sus familias intervinieron. Los padres de Stebin visitaron la casa de Jesna en Kannur, donde las conversaciones fluyeron con naturalidad y los corazones comenzaron a alinearse. Lo que empezó como una visita formal empezó a sentirse como algo más especial.",
-        },
-        {
-          icon: Sparkles,
-          number: "05",
-          title: "Una Hermosa Decisión",
-          description:
-            "Más tarde, la familia de Jesna fue a conocer a Stebin. Entre risas, té y cálidas conversaciones, se tomó una hermosa decisión: se fijó la boda. Lo que comenzó como un encuentro arreglado poco a poco se convirtió en una historia que se siente un poco como amor.",
-        },
-      ],
-    },
-  }
+  const content = useMemo(
+    () => ({
+      EN: {
+        title: "Our Story",
+        subtitle: "From a simple introduction to a beautiful promise",
+        intro:
+          "What started as a simple matrimony profile slowly unfolded into a story guided by faith, family, and a beautiful beginning.",
+        stories: [
+          {
+            icon: Users,
+            number: "01",
+            title: "A Simple Beginning",
+            description:
+              "It all began with a simple profile on a matrimony website. Among many profiles and possibilities, Stebin and Jesna were just two names in the crowd—unaware that their lives were about to intertwine in a beautiful way.",
+          },
+          {
+            icon: Heart,
+            number: "02",
+            title: "A First Connection",
+            description:
+              "Their conversations began gently. Messages turned into smiles across screens, and slowly curiosity grew into comfort as they started to know each other better.",
+          },
+          {
+            icon: Video,
+            number: "03",
+            title: "The First Meeting",
+            description:
+              "One day, Stebin travelled to Ernakulam to meet Jesna for the very first time. It wasn’t a dramatic moment—just two people sitting across from each other. Yet somehow it felt calm, familiar, and quietly meaningful.",
+          },
+          {
+            icon: Plane,
+            number: "04",
+            title: "Families Came Together",
+            description:
+              "Soon their families stepped in. Stebin’s parents visited Jesna’s home in Kannur, where conversations flowed naturally and hearts slowly aligned. What began as a formal visit started feeling like something more special.",
+          },
+          {
+            icon: Sparkles,
+            number: "05",
+            title: "A Beautiful Decision",
+            description:
+              "Later, Jesna’s family came to meet Stebin. Amid laughter, tea, and warm conversations, a beautiful decision was made—the wedding was fixed. What began as an arranged meeting slowly turned into a story that feels a little like love.",
+          },
+        ],
+      },
+      ES: {
+        title: "Nuestra Historia",
+        subtitle: "De una simple presentación a una hermosa promesa",
+        intro:
+          "Lo que comenzó como un simple perfil matrimonial poco a poco se convirtió en una historia guiada por la fe, la familia y un hermoso comienzo.",
+        stories: [
+          {
+            icon: Users,
+            number: "01",
+            title: "Un Comienzo Sencillo",
+            description:
+              "Todo comenzó con un simple perfil en un sitio matrimonial. Entre muchos perfiles y posibilidades, Stebin y Jesna eran solo dos nombres entre la multitud, sin saber que sus vidas pronto se entrelazarían de una manera hermosa.",
+          },
+          {
+            icon: Heart,
+            number: "02",
+            title: "Una Primera Conexión",
+            description:
+              "Sus conversaciones comenzaron suavemente. Los mensajes se convirtieron en sonrisas a través de las pantallas, y poco a poco la curiosidad se transformó en comodidad mientras empezaban a conocerse mejor.",
+          },
+          {
+            icon: Video,
+            number: "03",
+            title: "El Primer Encuentro",
+            description:
+              "Un día, Stebin viajó a Ernakulam para conocer a Jesna por primera vez. No fue un momento dramático, solo dos personas sentadas frente a frente. Sin embargo, de algún modo se sintió tranquilo, familiar y profundamente especial.",
+          },
+          {
+            icon: Plane,
+            number: "04",
+            title: "Las Familias se Unieron",
+            description:
+              "Pronto sus familias intervinieron. Los padres de Stebin visitaron la casa de Jesna en Kannur, donde las conversaciones fluyeron con naturalidad y los corazones comenzaron a alinearse. Lo que empezó como una visita formal empezó a sentirse como algo más especial.",
+          },
+          {
+            icon: Sparkles,
+            number: "05",
+            title: "Una Hermosa Decisión",
+            description:
+              "Más tarde, la familia de Jesna fue a conocer a Stebin. Entre risas, té y cálidas conversaciones, se tomó una hermosa decisión: se fijó la boda. Lo que comenzó como un encuentro arreglado poco a poco se convirtió en una historia que se siente un poco como amor.",
+          },
+        ],
+      },
+    }),
+    []
+  )
 
   const { title, subtitle, intro, stories } = content[language]
 
@@ -165,14 +187,7 @@ export function OurStory({ language }: OurStoryProps) {
 
           <motion.div
             className="relative overflow-hidden rounded-[2rem] border border-white/55 px-6 py-7 shadow-[0_20px_60px_rgba(110,87,73,0.10)] backdrop-blur-2xl md:px-10"
-            style={{
-              background:
-                "linear-gradient(180deg, rgba(255,255,255,0.34) 0%, rgba(255,255,255,0.18) 100%)",
-              WebkitBackdropFilter: "blur(18px) saturate(160%)",
-              backdropFilter: "blur(18px) saturate(160%)",
-              boxShadow:
-                "0 20px 60px rgba(110,87,73,0.10), inset 0 1px 0 rgba(255,255,255,0.62)",
-            }}
+            style={INTRO_STYLE}
             initial={{ opacity: 0, y: 24, scale: 0.97 }}
             whileInView={{ opacity: 1, y: 0, scale: 1 }}
             viewport={{ once: true }}
@@ -222,18 +237,16 @@ export function OurStory({ language }: OurStoryProps) {
                   delay: index * 0.08,
                   ease: [0.22, 1, 0.36, 1],
                 }}
-                onViewportEnter={() => vibrateSoft([8, 18, 8])}
+                onViewportEnter={() => {
+                  if (!vibratedRef.current[story.number]) {
+                    vibrateSoft([8, 18, 8])
+                    vibratedRef.current[story.number] = true
+                  }
+                }}
               >
                 <motion.div
                   className="relative h-full overflow-hidden rounded-[2rem] border border-white/55 p-6 shadow-[0_18px_60px_rgba(103,83,67,0.10)] backdrop-blur-2xl md:p-7"
-                  style={{
-                    background:
-                      "linear-gradient(180deg, rgba(255,255,255,0.34) 0%, rgba(255,255,255,0.18) 100%)",
-                    WebkitBackdropFilter: "blur(18px) saturate(160%)",
-                    backdropFilter: "blur(18px) saturate(160%)",
-                    boxShadow:
-                      "0 18px 60px rgba(103,83,67,0.10), inset 0 1px 0 rgba(255,255,255,0.65)",
-                  }}
+                  style={CARD_STYLE}
                   whileHover={{ y: -8, scale: 1.02 }}
                   transition={{ duration: 0.32, ease: [0.22, 1, 0.36, 1] }}
                 >

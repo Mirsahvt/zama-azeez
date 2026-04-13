@@ -1,6 +1,7 @@
 "use client";
 
-import { useEffect, useMemo, useRef, useState, type SVGProps } from "react";
+import Image from "next/image";
+import { useRef, type SVGProps } from "react";
 import {
   motion,
   useReducedMotion,
@@ -37,7 +38,26 @@ const content = {
     musicOn: "Silencio",
     musicOff: "Música",
   },
-};
+} as const;
+
+const PETALS = Array.from({ length: 8 }, (_, i) => ({
+  id: i,
+  left: `${(i * 11.8 + 6) % 100}%`,
+  delay: `${i * 1.4}s`,
+  duration: `${12 + (i % 4) * 1.5}s`,
+  size: `${12 + (i % 3) * 4}px`,
+  rotateFrom: `${i % 2 === 0 ? -20 : 20}deg`,
+  rotateTo: `${i % 2 === 0 ? 240 : -220}deg`,
+}));
+
+const GLOW_PARTICLES = Array.from({ length: 14 }, (_, i) => ({
+  id: i,
+  left: `${(i * 12.4 + 5) % 100}%`,
+  top: `${(i * 14.2 + 10) % 78}%`,
+  delay: `${i * 0.25}s`,
+  duration: `${3.8 + (i % 5) * 0.5}s`,
+  size: `${6 + (i % 4) * 4}px`,
+}));
 
 function OrnamentLine(props: SVGProps<SVGSVGElement>) {
   return (
@@ -104,99 +124,10 @@ function CornerOrnament(props: SVGProps<SVGSVGElement>) {
   );
 }
 
-function RosePetal({
-  left,
-  delay,
-  duration,
-  size,
-  rotateFrom,
-  rotateTo,
-}: {
-  left: string;
-  delay: number;
-  duration: number;
-  size: number;
-  rotateFrom: number;
-  rotateTo: number;
-}) {
-  return (
-    <motion.div
-      className="pointer-events-none absolute -top-16 z-[9]"
-      style={{ left, width: size, height: size * 0.8 }}
-      initial={{ y: -80, x: 0, opacity: 0, rotate: rotateFrom }}
-      animate={{
-        y: ["0vh", "110vh"],
-        x: [0, 18, -12, 10, -8],
-        opacity: [0, 0.72, 0.66, 0.45, 0],
-        rotate: [rotateFrom, rotateTo],
-      }}
-      transition={{
-        duration,
-        delay,
-        repeat: Infinity,
-        ease: "linear",
-      }}
-    >
-      <div
-        className="h-full w-full"
-        style={{
-          background:
-            "radial-gradient(circle at 30% 30%, rgba(255,247,249,0.95) 0%, rgba(247,205,219,0.92) 28%, rgba(229,170,191,0.88) 58%, rgba(195,126,151,0.82) 100%)",
-          borderRadius: "65% 35% 60% 40% / 50% 45% 55% 50%",
-          boxShadow: "0 8px 18px rgba(219,133,163,0.12)",
-          filter: "blur(0.2px)",
-        }}
-      />
-    </motion.div>
-  );
-}
-
-function GlowParticle({
-  left,
-  top,
-  delay,
-  duration,
-  size,
-}: {
-  left: string;
-  top: string;
-  delay: number;
-  duration: number;
-  size: number;
-}) {
-  return (
-    <motion.div
-      className="pointer-events-none absolute rounded-full"
-      style={{
-        left,
-        top,
-        width: size,
-        height: size,
-        background:
-          "radial-gradient(circle, rgba(255,248,238,0.95) 0%, rgba(205,165,125,0.42) 35%, rgba(247,205,219,0.14) 70%, transparent 100%)",
-        filter: "blur(1px)",
-      }}
-      animate={{
-        y: [0, -18, 0],
-        x: [0, 8, 0],
-        scale: [1, 1.18, 1],
-        opacity: [0.2, 0.75, 0.2],
-      }}
-      transition={{
-        duration,
-        delay,
-        repeat: Infinity,
-        ease: "easeInOut",
-      }}
-    />
-  );
-}
-
 export function Hero({ language, isMuted, onToggleMusic }: HeroProps) {
   const t = content[language];
   const sectionRef = useRef<HTMLElement>(null);
   const reduceMotion = useReducedMotion();
-  const [mounted, setMounted] = useState(false);
 
   const { scrollYProgress } = useScroll({
     target: sectionRef,
@@ -206,7 +137,7 @@ export function Hero({ language, isMuted, onToggleMusic }: HeroProps) {
   const posterY = useTransform(
     scrollYProgress,
     [0, 1],
-    reduceMotion ? ["0%", "0%"] : ["0%", "5%"]
+    reduceMotion ? [0, 0] : [0, 40]
   );
 
   const posterScale = useTransform(
@@ -218,43 +149,10 @@ export function Hero({ language, isMuted, onToggleMusic }: HeroProps) {
   const textY = useTransform(
     scrollYProgress,
     [0, 1],
-    reduceMotion ? ["0%", "0%"] : ["0%", "6%"]
+    reduceMotion ? [0, 0] : [0, 50]
   );
 
   const textOpacity = useTransform(scrollYProgress, [0, 0.9], [1, 0.96]);
-
-  useEffect(() => {
-    setMounted(true);
-  }, []);
-
-  const petals = useMemo(
-    () =>
-      Array.from({ length: 8 }, (_, i) => ({
-        id: i,
-        left: `${(i * 11.8 + 6) % 100}%`,
-        delay: i * 1.4,
-        duration: 12 + (i % 4) * 1.5,
-        size: 12 + (i % 3) * 4,
-        rotateFrom: i % 2 === 0 ? -20 : 20,
-        rotateTo: i % 2 === 0 ? 240 : -220,
-      })),
-    []
-  );
-
-  const glowParticles = useMemo(
-    () =>
-      Array.from({ length: 14 }, (_, i) => ({
-        id: i,
-        left: `${(i * 12.4 + 5) % 100}%`,
-        top: `${(i * 14.2 + 10) % 78}%`,
-        delay: i * 0.25,
-        duration: 3.8 + (i % 5) * 0.5,
-        size: 6 + (i % 4) * 4,
-      })),
-    []
-  );
-
-  if (!mounted) return null;
 
   return (
     <>
@@ -305,6 +203,7 @@ export function Hero({ language, isMuted, onToggleMusic }: HeroProps) {
         .gold-shimmer {
           background-size: 200% 100%;
           animation: shimmerMove 5s linear infinite;
+          will-change: background-position;
         }
 
         @keyframes shimmerMove {
@@ -319,6 +218,79 @@ export function Hero({ language, isMuted, onToggleMusic }: HeroProps) {
 
         .scroll-pulse {
           animation: scrollPulse 2.4s ease-in-out infinite;
+        }
+
+        @keyframes petalFall {
+          0% {
+            transform: translate3d(0, -80px, 0) rotate(var(--rotate-from));
+            opacity: 0;
+          }
+          10% {
+            opacity: 0.72;
+          }
+          35% {
+            transform: translate3d(18px, 28vh, 0) rotate(calc(var(--rotate-from) + 70deg));
+            opacity: 0.66;
+          }
+          60% {
+            transform: translate3d(-12px, 58vh, 0) rotate(calc(var(--rotate-from) + 140deg));
+            opacity: 0.45;
+          }
+          80% {
+            transform: translate3d(10px, 86vh, 0) rotate(calc(var(--rotate-from) + 200deg));
+            opacity: 0.2;
+          }
+          100% {
+            transform: translate3d(-8px, 110vh, 0) rotate(var(--rotate-to));
+            opacity: 0;
+          }
+        }
+
+        @keyframes glowFloat {
+          0%, 100% {
+            transform: translate3d(0, 0, 0) scale(1);
+            opacity: 0.2;
+          }
+          50% {
+            transform: translate3d(8px, -18px, 0) scale(1.18);
+            opacity: 0.75;
+          }
+        }
+
+        .hero-petal {
+          position: absolute;
+          top: -4rem;
+          z-index: 9;
+          pointer-events: none;
+          animation-name: petalFall;
+          animation-timing-function: linear;
+          animation-iteration-count: infinite;
+          animation-duration: var(--duration);
+          animation-delay: var(--delay);
+          will-change: transform, opacity;
+          transform: translateZ(0);
+        }
+
+        .hero-glow {
+          position: absolute;
+          pointer-events: none;
+          border-radius: 9999px;
+          animation-name: glowFloat;
+          animation-timing-function: ease-in-out;
+          animation-iteration-count: infinite;
+          animation-duration: var(--duration);
+          animation-delay: var(--delay);
+          will-change: transform, opacity;
+          transform: translateZ(0);
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+          .gold-shimmer,
+          .scroll-pulse,
+          .hero-petal,
+          .hero-glow {
+            animation: none !important;
+          }
         }
       `}</style>
 
@@ -351,17 +323,20 @@ export function Hero({ language, isMuted, onToggleMusic }: HeroProps) {
           <div className="relative h-full w-full">
             <div className="absolute inset-0 z-[1] bg-[radial-gradient(circle_at_center,rgba(255,244,235,0.18)_0%,rgba(255,235,230,0.08)_35%,rgba(0,0,0,0)_70%)]" />
 
-            <motion.img
-              src="/images/doodle-couple.png"
-              alt="Wedding Couple"
-              className="absolute inset-0 z-[2] h-full w-full object-cover object-center"
-              style={{
-                filter: "drop-shadow(0 18px 34px rgba(0,0,0,0.18))",
-              }}
-              initial={{ scale: 1.04, opacity: 0, y: 14 }}
-              animate={{ scale: 1, opacity: 1, y: 0 }}
-              transition={{ duration: 1.2, ease: [0.22, 1, 0.36, 1] }}
-            />
+            <div className="absolute inset-0 z-[2]">
+              <Image
+                src="/images/doodle-couple.png"
+                alt="Wedding Couple"
+                fill
+                priority
+                fetchPriority="high"
+                sizes="100vw"
+                className="object-cover object-center"
+                style={{
+                  filter: "drop-shadow(0 18px 34px rgba(0,0,0,0.18))",
+                }}
+              />
+            </div>
 
             {/* image overlays */}
             <div className="absolute inset-0 z-[3] bg-black/20" />
@@ -372,16 +347,57 @@ export function Hero({ language, isMuted, onToggleMusic }: HeroProps) {
         {/* particles */}
         {!reduceMotion && (
           <div className="absolute inset-0 z-[7]">
-            {glowParticles.map((p) => (
-              <GlowParticle key={p.id} {...p} />
+            {GLOW_PARTICLES.map((p) => (
+              <div
+                key={p.id}
+                className="hero-glow"
+                style={
+                  {
+                    left: p.left,
+                    top: p.top,
+                    width: p.size,
+                    height: p.size,
+                    "--delay": p.delay,
+                    "--duration": p.duration,
+                    background:
+                      "radial-gradient(circle, rgba(255,248,238,0.95) 0%, rgba(205,165,125,0.42) 35%, rgba(247,205,219,0.14) 70%, transparent 100%)",
+                    filter: "blur(1px)",
+                  } as React.CSSProperties
+                }
+              />
             ))}
           </div>
         )}
 
         {!reduceMotion && (
           <div className="absolute inset-0 z-[8] overflow-hidden">
-            {petals.map((petal) => (
-              <RosePetal key={petal.id} {...petal} />
+            {PETALS.map((petal) => (
+              <div
+                key={petal.id}
+                className="hero-petal"
+                style={
+                  {
+                    left: petal.left,
+                    width: petal.size,
+                    height: `calc(${petal.size} * 0.8)`,
+                    "--delay": petal.delay,
+                    "--duration": petal.duration,
+                    "--rotate-from": petal.rotateFrom,
+                    "--rotate-to": petal.rotateTo,
+                  } as React.CSSProperties
+                }
+              >
+                <div
+                  className="h-full w-full"
+                  style={{
+                    background:
+                      "radial-gradient(circle at 30% 30%, rgba(255,247,249,0.95) 0%, rgba(247,205,219,0.92) 28%, rgba(229,170,191,0.88) 58%, rgba(195,126,151,0.82) 100%)",
+                    borderRadius: "65% 35% 60% 40% / 50% 45% 55% 50%",
+                    boxShadow: "0 8px 18px rgba(219,133,163,0.12)",
+                    filter: "blur(0.2px)",
+                  }}
+                />
+              </div>
             ))}
           </div>
         )}

@@ -17,6 +17,13 @@ function ScratchTile({ value, delay = 0, onReveal }: ScratchTileProps) {
   const canvasRef = useRef<HTMLCanvasElement>(null)
   const wrapperRef = useRef<HTMLDivElement>(null)
   const audioRef = useRef<HTMLAudioElement | null>(null)
+  const lastRevealCheckRef = useRef(0)
+  const burstParticlesRef = useRef(
+    Array.from({ length: 12 }, () => ({
+      x: (Math.random() - 0.5) * 130,
+      y: (Math.random() - 0.5) * 110,
+    }))
+  )
 
   const [revealed, setRevealed] = useState(false)
   const [isScratching, setIsScratching] = useState(false)
@@ -24,33 +31,39 @@ function ScratchTile({ value, delay = 0, onReveal }: ScratchTileProps) {
 
   const powderBits = useMemo(
     () =>
-      Array.from({ length: 16 }, (_, i) => ({
+      Array.from({ length: 10 }, (_, i) => ({
         id: i,
         left: `${(i * 17) % 100}%`,
         top: `${(i * 13) % 100}%`,
         x: (Math.random() - 0.5) * 48,
         y: (Math.random() - 0.5) * 34,
-        delay: i * 0.015,
+        delay: i * 0.02,
       })),
     []
   )
 
   const sparkles = useMemo(
     () =>
-      Array.from({ length: 12 }, (_, i) => ({
+      Array.from({ length: 8 }, (_, i) => ({
         id: i,
         left: `${(i * 19) % 100}%`,
         top: `${(i * 11) % 100}%`,
         x: i % 2 === 0 ? 24 : -24,
         y: -14 - (i % 4) * 5,
-        delay: i * 0.03,
+        delay: i * 0.04,
       })),
     []
   )
 
   useEffect(() => {
-    audioRef.current = new Audio("/freesound_community-morris-head-scratch-103330.mp3")
-    audioRef.current.volume = 0.3
+    const audio = new Audio("/freesound_community-morris-head-scratch-103330.mp3")
+    audio.volume = 0.3
+    audioRef.current = audio
+
+    return () => {
+      audio.pause()
+      audioRef.current = null
+    }
   }, [])
 
   useEffect(() => {
@@ -120,7 +133,7 @@ function ScratchTile({ value, delay = 0, onReveal }: ScratchTileProps) {
         ctx.stroke()
       }
 
-      for (let i = 0; i < 60; i++) {
+      for (let i = 0; i < 42; i++) {
         ctx.fillStyle = `rgba(255,255,255,${Math.random() * 0.16})`
         ctx.beginPath()
         ctx.arc(
@@ -149,7 +162,7 @@ function ScratchTile({ value, delay = 0, onReveal }: ScratchTileProps) {
 
     const playScratchSound = () => {
       const now = Date.now()
-      if (!audioRef.current || now - lastSoundTime < 110) return
+      if (!audioRef.current || now - lastSoundTime < 180) return
       audioRef.current.currentTime = 0
       audioRef.current.play().catch(() => {})
       lastSoundTime = now
@@ -185,6 +198,10 @@ function ScratchTile({ value, delay = 0, onReveal }: ScratchTileProps) {
     }
 
     const checkReveal = () => {
+      const now = Date.now()
+      if (now - lastRevealCheckRef.current < 120) return
+      lastRevealCheckRef.current = now
+
       const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height)
       let transparentPixels = 0
 
@@ -218,7 +235,6 @@ function ScratchTile({ value, delay = 0, onReveal }: ScratchTileProps) {
       drawing = true
       setIsScratching(true)
       const point = getPoint(event)
-      if (!point) return
       scratch(point.x, point.y)
       playScratchSound()
     }
@@ -226,7 +242,6 @@ function ScratchTile({ value, delay = 0, onReveal }: ScratchTileProps) {
     const handleMove = (event: MouseEvent | TouchEvent) => {
       if (!drawing || revealed) return
       const point = getPoint(event)
-      if (!point) return
       scratch(point.x, point.y)
       playScratchSound()
       checkReveal()
@@ -365,29 +380,25 @@ function ScratchTile({ value, delay = 0, onReveal }: ScratchTileProps) {
 
         <AnimatePresence>
           {burst &&
-            Array.from({ length: 18 }).map((_, i) => {
-              const x = (Math.random() - 0.5) * 130
-              const y = (Math.random() - 0.5) * 110
-              return (
-                <motion.div
-                  key={i}
-                  className="absolute left-1/2 top-1/2 h-1.5 w-1.5 rounded-full"
-                  style={{
-                    background:
-                      i % 3 === 0 ? "#ffffff" : i % 3 === 1 ? "#f0dcc6" : "#e8bd8b",
-                  }}
-                  initial={{ opacity: 1, x: 0, y: 0, scale: 1 }}
-                  animate={{
-                    opacity: 0,
-                    x,
-                    y,
-                    scale: 0,
-                  }}
-                  exit={{ opacity: 0 }}
-                  transition={{ duration: 1 }}
-                />
-              )
-            })}
+            burstParticlesRef.current.map((particle, i) => (
+              <motion.div
+                key={i}
+                className="absolute left-1/2 top-1/2 h-1.5 w-1.5 rounded-full"
+                style={{
+                  background:
+                    i % 3 === 0 ? "#ffffff" : i % 3 === 1 ? "#f0dcc6" : "#e8bd8b",
+                }}
+                initial={{ opacity: 1, x: 0, y: 0, scale: 1 }}
+                animate={{
+                  opacity: 0,
+                  x: particle.x,
+                  y: particle.y,
+                  scale: 0,
+                }}
+                exit={{ opacity: 0 }}
+                transition={{ duration: 1 }}
+              />
+            ))}
         </AnimatePresence>
 
         <AnimatePresence>

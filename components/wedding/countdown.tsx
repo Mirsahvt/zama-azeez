@@ -1,6 +1,7 @@
 "use client"
 
-import { useState, useEffect, useRef } from "react"
+import Image from "next/image"
+import { useState, useEffect, useRef, useMemo } from "react"
 import { motion, AnimatePresence, useInView } from "framer-motion"
 
 interface CountdownProps {
@@ -47,12 +48,28 @@ function AnimatedNumber({
   )
 }
 
+function getTimeLeft(targetTime: number): TimeLeft {
+  const now = Date.now()
+  const difference = targetTime - now
+
+  if (difference <= 0) {
+    return { days: 0, hours: 0, minutes: 0, seconds: 0 }
+  }
+
+  return {
+    days: Math.floor(difference / (1000 * 60 * 60 * 24)),
+    hours: Math.floor(
+      (difference % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60)
+    ),
+    minutes: Math.floor((difference % (1000 * 60 * 60)) / (1000 * 60)),
+    seconds: Math.floor((difference % (1000 * 60)) / 1000),
+  }
+}
+
 export function Countdown({ language }: CountdownProps) {
   const sectionRef = useRef<HTMLElement | null>(null)
-  const isInView = useInView(sectionRef, { amount: 0.35 })
-
   const tickRef = useRef<HTMLAudioElement | null>(null)
-  const prevTimeRef = useRef<TimeLeft>({
+  const previousTimeRef = useRef<TimeLeft>({
     days: 0,
     hours: 0,
     minutes: 0,
@@ -60,12 +77,12 @@ export function Countdown({ language }: CountdownProps) {
   })
   const hasInitializedRef = useRef(false)
 
-  const [timeLeft, setTimeLeft] = useState<TimeLeft>({
-    days: 0,
-    hours: 0,
-    minutes: 0,
-    seconds: 0,
-  })
+  const isInView = useInView(sectionRef, { amount: 0.35, once: false })
+  const weddingDateRef = useRef(new Date("2026-05-11T00:00:00").getTime())
+
+  const [timeLeft, setTimeLeft] = useState<TimeLeft>(() =>
+    getTimeLeft(weddingDateRef.current)
+  )
 
   const content = {
     EN: {
@@ -84,77 +101,78 @@ export function Countdown({ language }: CountdownProps) {
       minutes: "Minutos",
       seconds: "Segundos",
     },
-  }
+  } as const
 
   const { title, subtitle, days, hours, minutes, seconds } = content[language]
 
   useEffect(() => {
-    const weddingDate = new Date("2026-05-11T00:00:00").getTime()
+    const audio = tickRef.current
+    if (!audio) return
 
+    if (!isInView) {
+      audio.pause()
+      audio.currentTime = 0
+    }
+  }, [isInView])
+
+  useEffect(() => {
     const updateCountdown = () => {
-      const now = new Date().getTime()
-      const difference = weddingDate - now
+      const newTime = getTimeLeft(weddingDateRef.current)
+      const previous = previousTimeRef.current
 
-      if (difference <= 0) {
-        const zeroTime = { days: 0, hours: 0, minutes: 0, seconds: 0 }
-        prevTimeRef.current = timeLeft
-        setTimeLeft(zeroTime)
-
-        if (tickRef.current) {
-          tickRef.current.pause()
-          tickRef.current.currentTime = 0
-        }
-        return
-      }
-
-      const newTime = {
-        days: Math.floor(difference / (1000 * 60 * 60 * 24)),
-        hours: Math.floor(
-          (difference % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60)
-        ),
-        minutes: Math.floor((difference % (1000 * 60 * 60)) / (1000 * 60)),
-        seconds: Math.floor((difference % (1000 * 60)) / 1000),
-      }
-
-      const previous = prevTimeRef.current
-
-      setTimeLeft(newTime)
-      prevTimeRef.current = newTime
-
-      // Don't tick on first initialization
-      if (!hasInitializedRef.current) {
-        hasInitializedRef.current = true
-        return
-      }
-
-      // Only play when section is visible AND second actually changed
-      if (isInView && newTime.seconds !== previous.seconds && tickRef.current) {
+      if (
+        hasInitializedRef.current &&
+        isInView &&
+        newTime.seconds !== previous.seconds &&
+        tickRef.current &&
+        newTime.days + newTime.hours + newTime.minutes + newTime.seconds > 0
+      ) {
         tickRef.current.pause()
         tickRef.current.currentTime = 0
         tickRef.current.play().catch(() => {})
       }
+
+      previousTimeRef.current = timeLeft
+      setTimeLeft(newTime)
+
+      if (!hasInitializedRef.current) {
+        hasInitializedRef.current = true
+      }
     }
 
     updateCountdown()
-    const timer = setInterval(updateCountdown, 1000)
+    const timer = window.setInterval(updateCountdown, 1000)
 
-    return () => clearInterval(timer)
-  }, [isInView, timeLeft])
-
-  // Immediately stop any playing sound when section leaves view
-  useEffect(() => {
-    if (!isInView && tickRef.current) {
-      tickRef.current.pause()
-      tickRef.current.currentTime = 0
+    return () => {
+      window.clearInterval(timer)
     }
   }, [isInView])
 
-  const timeUnits = [
-    { value: timeLeft.days, prev: prevTimeRef.current.days, label: days },
-    { value: timeLeft.hours, prev: prevTimeRef.current.hours, label: hours },
-    { value: timeLeft.minutes, prev: prevTimeRef.current.minutes, label: minutes },
-    { value: timeLeft.seconds, prev: prevTimeRef.current.seconds, label: seconds },
-  ]
+  const timeUnits = useMemo(
+    () => [
+      {
+        value: timeLeft.days,
+        prev: previousTimeRef.current.days,
+        label: days,
+      },
+      {
+        value: timeLeft.hours,
+        prev: previousTimeRef.current.hours,
+        label: hours,
+      },
+      {
+        value: timeLeft.minutes,
+        prev: previousTimeRef.current.minutes,
+        label: minutes,
+      },
+      {
+        value: timeLeft.seconds,
+        prev: previousTimeRef.current.seconds,
+        label: seconds,
+      },
+    ],
+    [timeLeft, days, hours, minutes, seconds]
+  )
 
   return (
     <section
@@ -162,13 +180,20 @@ export function Countdown({ language }: CountdownProps) {
       id="countdown"
       className="relative overflow-hidden py-24"
     >
-      <audio ref={tickRef} src="/freesound_community-ticking-clock_1-27477.mp3" preload="auto" />
+      <audio
+        ref={tickRef}
+        src="/freesound_community-ticking-clock_1-27477.mp3"
+        preload="auto"
+      />
 
       <div className="absolute inset-0 overflow-hidden">
-        <img
+        <Image
           src="/images/rose.jpg"
           alt="Floral background"
-          className="h-full w-full scale-[1.1] object-cover object-center"
+          fill
+          priority={false}
+          sizes="100vw"
+          className="scale-[1.1] object-cover object-center"
         />
       </div>
 

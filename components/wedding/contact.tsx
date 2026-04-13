@@ -9,30 +9,41 @@ import {
   Heart,
   Instagram,
 } from "lucide-react"
+import { useCallback, useMemo } from "react"
 
 interface ContactProps {
   language: "EN" | "ES"
 }
 
 export function Contact({ language }: ContactProps) {
+  const phoneNumber = "+918586010417"
 
-  const phoneNumber = "+971508577054"
+  const mapUrl = "https://maps.google.com/?q=Sacred+Heart+Church+Angadikadavu"
 
-  const mapUrl =
-    "https://maps.google.com/?q=Sacred+Heart+Church+Angadikadavu"
-
-  const shareMessage = encodeURIComponent(
-    "You're warmly invited to Stebin & Jesna's Wedding Celebration 💍"
+  const shareMessage = useMemo(
+    () =>
+      encodeURIComponent(
+        "You're warmly invited to Stebin & Jesna's Wedding Celebration 💍"
+      ),
+    []
   )
 
-  const handleShare = async () => {
+  const shareText = useMemo(
+    () =>
+      "With joyful hearts in Christ, we warmly invite you to be part of our special day.Your presence, prayers, and blessings mean so much to us and to our families.Come celebrate love, faith, and togetherness with us.",
+    []
+  )
+
+  const whatsappNumber = useMemo(() => phoneNumber.replace("+", ""), [phoneNumber])
+
+  const handleShare = useCallback(async () => {
     const url = window.location.href
 
     if (navigator.share) {
       try {
         await navigator.share({
           title: "Wedding Invitation",
-          text: "With joyful hearts in Christ, we warmly invite you to be part of our special day.Your presence, prayers, and blessings mean so much to us and to our families.Come celebrate love, faith, and togetherness with us.",
+          text: shareText,
           url,
         })
         return
@@ -40,136 +51,140 @@ export function Contact({ language }: ContactProps) {
     }
 
     window.open(`https://wa.me/?text=${shareMessage}%20${url}`, "_blank")
-  }
+  }, [shareMessage, shareText])
 
-  const buttons = [
-    {
-      icon: MapPin,
-      label: "Venue Map",
-      href: mapUrl,
-      style:
-        "bg-white/80 text-[#5a3347] border border-white/50",
-    },
-    {
-      icon: Phone,
-      label: "Call Family",
-      href: `tel:${phoneNumber}`,
-      style:
-        "bg-white/80 text-[#5a3347] border border-white/50",
-    },
-    {
-      icon: MessageCircle,
-      label: "WhatsApp",
-      href: `https://wa.me/${phoneNumber.replace("+", "")}`,
-      style:
-        "bg-[#25D366]/15 text-[#25D366] border border-[#25D366]/30",
-    },
-    {
-      icon: Share2,
-      label: "Share Invitation",
-      onClick: handleShare,
-      style:
-        "bg-[#4f2c3d] text-white border border-[#4f2c3d]",
-    },
-  ]
+  const buttons = useMemo(
+    () => [
+      {
+        icon: MapPin,
+        label: "Venue Map",
+        href: mapUrl,
+        style: "bg-white/80 text-[#5a3347] border border-white/50",
+      },
+      {
+        icon: Phone,
+        label: "Call Family",
+        href: `tel:${phoneNumber}`,
+        style: "bg-white/80 text-[#5a3347] border border-white/50",
+      },
+      {
+        icon: MessageCircle,
+        label: "WhatsApp",
+        href: `https://wa.me/${whatsappNumber}`,
+        style: "bg-[#25D366]/15 text-[#25D366] border border-[#25D366]/30",
+      },
+      {
+        icon: Share2,
+        label: "Share Invitation",
+        onClick: handleShare,
+        style: "bg-[#4f2c3d] text-white border border-[#4f2c3d]",
+      },
+    ],
+    [handleShare, mapUrl, phoneNumber, whatsappNumber]
+  )
 
   return (
     <section
       id="contact"
-      className="relative py-24 px-4 overflow-hidden"
+      className="relative overflow-hidden px-4 py-24"
       style={{
         background:
           "linear-gradient(180deg,#f7dbe5 0%,#f3d3df 25%,#e7c1d0 55%,#7e5165 80%,#3f2433 100%)",
       }}
     >
-
-      <div className="max-w-5xl mx-auto text-center">
-
-        {/* Title */}
+      <div className="mx-auto max-w-5xl text-center">
         <motion.h2
-          className="text-4xl md:text-6xl mb-4"
+          className="mb-4 text-4xl md:text-6xl"
           style={{
             fontFamily: "var(--font-script), cursive",
             color: "#4b2a3a",
           }}
           initial={{ opacity: 0, y: 25 }}
           whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.8 }}
         >
           With Love, We Await Your Presence
         </motion.h2>
 
-        {/* Subtitle */}
         <motion.p
-          className="max-w-3xl mx-auto text-sm md:text-base leading-7 mb-12 text-[#6a4456]"
+          className="mx-auto mb-12 max-w-3xl text-sm leading-7 text-[#6a4456] md:text-base"
           initial={{ opacity: 0 }}
           whileInView={{ opacity: 1 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.8 }}
         >
           Your prayers, blessings and presence will make our celebration even
           more meaningful. We would be truly honored to celebrate this sacred
           day with you.
         </motion.p>
 
-        {/* Glass Card */}
         <motion.div
-          className="rounded-3xl p-10 backdrop-blur-xl border border-white/40 bg-white/30 shadow-xl"
+          className="rounded-3xl border border-white/40 bg-white/30 p-10 shadow-xl backdrop-blur-xl"
           initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.8 }}
         >
-
-          {/* Blessing Title */}
-          <p className="uppercase text-xs tracking-[0.3em] mb-4 text-[#7a4a61]">
+          <p className="mb-4 text-xs uppercase tracking-[0.3em] text-[#7a4a61]">
             A Final Blessing
           </p>
 
-          {/* Quote */}
           <p
-            className="italic text-xl md:text-2xl text-[#3f2433]"
+            className="text-xl italic text-[#3f2433] md:text-2xl"
             style={{ fontFamily: "Cormorant Garamond, serif" }}
           >
             “This is the day that the Lord has made; let us rejoice and be glad in it.”
           </p>
 
-          <p className="text-sm mt-3 text-[#9b6c82] uppercase tracking-[0.2em]">
+          <p className="mt-3 text-sm uppercase tracking-[0.2em] text-[#9b6c82]">
             Psalm 118:24
           </p>
 
-          <p className="mt-6 text-sm leading-8 text-[#5b3748] max-w-xl mx-auto">
+          <p className="mx-auto mt-6 max-w-xl text-sm leading-8 text-[#5b3748]">
             With joyful hearts in Christ, we warmly welcome you to be part of our
             wedding celebration.
           </p>
 
-          {/* Buttons */}
-          <div className="grid grid-cols-2 gap-4 mt-10">
-
-            {buttons.map((btn, i) => {
+          <div className="mt-10 grid grid-cols-2 gap-4">
+            {buttons.map((btn) => {
               const Icon = btn.icon
-              const Component = btn.onClick ? "button" : "a"
+
+              if (btn.onClick) {
+                return (
+                  <button
+                    key={btn.label}
+                    onClick={btn.onClick}
+                    className={`flex flex-col items-center justify-center gap-2 rounded-xl p-6 transition hover:scale-105 ${btn.style}`}
+                    type="button"
+                  >
+                    <Icon size={22} />
+                    <span className="text-sm font-medium">{btn.label}</span>
+                  </button>
+                )
+              }
 
               return (
-                <Component
-                  key={i}
-                  {...(btn.href ? { href: btn.href, target: "_blank" } : {})}
-                  {...(btn.onClick ? { onClick: btn.onClick } : {})}
-                  className={`flex flex-col items-center justify-center gap-2 p-6 rounded-xl ${btn.style} hover:scale-105 transition`}
+                <a
+                  key={btn.label}
+                  href={btn.href}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className={`flex flex-col items-center justify-center gap-2 rounded-xl p-6 transition hover:scale-105 ${btn.style}`}
                 >
                   <Icon size={22} />
-                  <span className="text-sm font-medium">
-                    {btn.label}
-                  </span>
-                </Component>
+                  <span className="text-sm font-medium">{btn.label}</span>
+                </a>
               )
             })}
           </div>
-
         </motion.div>
 
-        {/* Footer */}
         <div className="mt-16 text-center">
-
-          <div className="flex justify-center items-center gap-3 mb-4">
-            <div className="w-14 h-px bg-white/40"></div>
-            <Heart className="w-4 h-4 text-pink-200 fill-pink-200" />
-            <div className="w-14 h-px bg-white/40"></div>
+          <div className="mb-4 flex items-center justify-center gap-3">
+            <div className="h-px w-14 bg-white/40" />
+            <Heart className="h-4 w-4 fill-pink-200 text-pink-200" />
+            <div className="h-px w-14 bg-white/40" />
           </div>
 
           <p
@@ -180,34 +195,29 @@ export function Contact({ language }: ContactProps) {
           </p>
 
           <p
-            className="text-3xl text-white mt-2"
+            className="mt-2 text-3xl text-white"
             style={{ fontFamily: "var(--font-script), cursive" }}
           >
             Stebin & Jesna
           </p>
 
-          <p className="text-white/70 text-sm mt-2">
-            © 2026 InviteScroll
-          </p>
+          <p className="mt-2 text-sm text-white/70">© 2026 InviteScroll</p>
 
-          {/* InviteScroll Tag */}
           <div className="mt-6 flex flex-col items-center gap-2">
-
             <div className="flex items-center gap-3">
-              <div className="w-10 h-px bg-white/40"></div>
-              <Heart className="w-3 h-3 text-pink-200 fill-pink-200" />
-              <div className="w-10 h-px bg-white/40"></div>
+              <div className="h-px w-10 bg-white/40" />
+              <Heart className="h-3 w-3 fill-pink-200 text-pink-200" />
+              <div className="h-px w-10 bg-white/40" />
             </div>
 
             <p
-              className="text-white text-sm"
+              className="text-sm text-white"
               style={{ fontFamily: "var(--font-script), cursive" }}
             >
               InviteScroll
             </p>
 
             <div className="flex items-center gap-4 text-xs text-white/80">
-
               <span className="flex items-center gap-1">
                 <Phone size={14} />
                 050 857 7054
@@ -217,13 +227,9 @@ export function Contact({ language }: ContactProps) {
                 <Instagram size={14} />
                 @invitescroll
               </span>
-
             </div>
-
           </div>
-
         </div>
-
       </div>
     </section>
   )

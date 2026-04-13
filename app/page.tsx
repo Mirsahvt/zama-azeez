@@ -1,6 +1,6 @@
 "use client"
 
-import { useEffect, useRef, useState } from "react"
+import { useEffect, useRef, useState, useCallback } from "react"
 import { AnimatePresence, motion } from "framer-motion"
 import { Envelope } from "@/components/wedding/envelope"
 import { Header } from "@/components/wedding/header"
@@ -22,7 +22,14 @@ export default function WeddingInvitation() {
 
   const audioRef = useRef<HTMLAudioElement | null>(null)
 
-  const handleEnvelopeOpen = async () => {
+  useEffect(() => {
+    const audio = audioRef.current
+    if (!audio) return
+    audio.volume = 0.3
+    audio.loop = true
+  }, [])
+
+  const handleEnvelopeOpen = useCallback(async () => {
     setIsEnvelopeOpened(true)
     window.scrollTo({ top: 0, behavior: "smooth" })
 
@@ -37,9 +44,9 @@ export default function WeddingInvitation() {
     } catch (error) {
       console.error("Audio autoplay blocked:", error)
     }
-  }
+  }, [])
 
-  const toggleMusic = async () => {
+  const toggleMusic = useCallback(async () => {
     const audio = audioRef.current
     if (!audio) return
 
@@ -55,15 +62,7 @@ export default function WeddingInvitation() {
     } catch (error) {
       console.error("Audio play failed:", error)
     }
-  }
-
-  useEffect(() => {
-    const audio = audioRef.current
-    if (!audio) return
-
-    audio.volume = 0.3
-    audio.loop = true
-  }, [])
+  }, [isMuted])
 
   return (
     <main className="min-h-screen bg-ivory">
