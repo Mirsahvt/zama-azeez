@@ -24,7 +24,7 @@ export function FAQ({ language }: FAQProps) {
           icon: Sparkles,
           question: "What should guests wear?",
           answer:
-            "Guests are welcome to wear any elegant color that beautifully complements the Groom. For men, Mundu and Kurta will be especially appreciated.",
+            "Guests are warmly invited to dress in elegant and festive attire suitable for a traditional celebration. For men, Mundu and Kurta will be especially appreciated. For girls and ladies, graceful sarees, churidars, lehengas, gowns, or other traditional outfits will beautifully complement the celebration.",
         },
         
         {

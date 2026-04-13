@@ -21,7 +21,7 @@ const content = {
     names: ["Stebin", "Jesna"],
     ampersand: "&",
     quote: "Join us as we celebrate love, faith, and a beautiful new beginning.",
-    subline: "A Christian Wedding Celebration",
+    subline: "A  Wedding Celebration",
     scroll: "SCROLL TO BEGIN",
     musicOn: "Silence",
     musicOff: "Music",
