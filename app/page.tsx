@@ -25,7 +25,8 @@ export default function WeddingInvitation() {
   useEffect(() => {
     const audio = audioRef.current
     if (!audio) return
-    audio.volume = 0.3
+
+    audio.volume = 0.20
     audio.loop = true
   }, [])
 
@@ -37,7 +38,7 @@ export default function WeddingInvitation() {
     if (!audio) return
 
     try {
-      audio.volume = 0.3
+      audio.volume = 0.20
       audio.loop = true
       await audio.play()
       setIsMuted(false)
@@ -46,13 +47,13 @@ export default function WeddingInvitation() {
     }
   }, [])
 
-  const toggleMusic = useCallback(async () => {
+  const handleToggleMusic = useCallback(async () => {
     const audio = audioRef.current
     if (!audio) return
 
     try {
       if (isMuted) {
-        audio.volume = 0.3
+        audio.volume = 0.20
         await audio.play()
         setIsMuted(false)
       } else {
@@ -66,8 +67,8 @@ export default function WeddingInvitation() {
 
   return (
     <main className="min-h-screen bg-ivory">
-      <audio ref={audioRef} preload="auto">
-        <source src="/audio/wedding-music.mp3" type="audio/mpeg" />
+      <audio ref={audioRef} preload="none">
+        <source src="/audio/wedding audio.mp3" type="audio/mpeg" />
       </audio>
 
       <AnimatePresence mode="wait">
@@ -89,11 +90,13 @@ export default function WeddingInvitation() {
             className="relative"
           >
             <Header language={language} onLanguageChange={setLanguage} />
+
             <Hero
               language={language}
               isMuted={isMuted}
-              onToggleMusic={toggleMusic}
+              onToggleMusic={handleToggleMusic}
             />
+
             <DateReveal language={language} />
             <Countdown language={language} />
             <OurStory language={language} />

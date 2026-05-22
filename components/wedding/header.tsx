@@ -169,9 +169,9 @@ export function Header({ language, onLanguageChange }: HeaderProps) {
               <div className="mb-10 flex items-center gap-3">
                 <div className="h-px w-12 bg-gradient-to-r from-transparent via-white/45 to-transparent" />
                 <div className="flex items-center gap-2 rounded-full border border-white/28 bg-white/12 px-4 py-2">
-                  <span className="text-sm tracking-[0.16em] text-white">S</span>
+                  <span className="text-sm tracking-[0.16em] text-white">Z</span>
                   <HeartIcon />
-                  <span className="text-sm tracking-[0.16em] text-white">J</span>
+                  <span className="text-sm tracking-[0.16em] text-white">A</span>
                 </div>
                 <div className="h-px w-12 bg-gradient-to-r from-transparent via-white/45 to-transparent" />
               </div>

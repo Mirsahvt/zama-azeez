@@ -1,24 +1,20 @@
-"use client"
+"use client";
 
-import {
-  motion,
-  useScroll,
-  useTransform,
-} from "framer-motion"
-import Image from "next/image"
-import { useRef } from "react"
+import { motion, useScroll, useTransform } from "framer-motion";
+import Image from "next/image";
+import { useRef } from "react";
 
 interface PhotoGalleryProps {
-  language: "ES" | "EN"
+  language: "ES" | "EN";
 }
 
 export function PhotoGallery({ language }: PhotoGalleryProps) {
-  const sectionRef = useRef<HTMLDivElement>(null)
+  const sectionRef = useRef<HTMLDivElement>(null);
 
   const { scrollYProgress } = useScroll({
     target: sectionRef,
     offset: ["start start", "end end"],
-  })
+  });
 
   const content = {
     EN: {
@@ -26,24 +22,26 @@ export function PhotoGallery({ language }: PhotoGalleryProps) {
       groomLabel: "The Groom",
       brideLabel: "The Bride",
       coupleLabel: "Together",
-      groomName: "Stebin",
-      brideName: "Jesna",
-      coupleName: "Stebin & Jesna",
-      groomParents: "Xavier & Teresa",
-      brideParents: "Joseph M.D. & Mary Jose",
+      groomName: "Abdul Azeez",
+      brideName: "Fathima Zama",
+      coupleName: "Fathima Zama & Abdul Azeez",
+      groomParents: "S/o Mr. Abdul Salam & Ayisha Bi",
+      brideParents: "D/o Hameed & Aysha Rishni",
+      scroll: "Scroll",
     },
     ES: {
-      title: "Conoce a la Pareja",
-      groomLabel: "El Novio",
-      brideLabel: "La Novia",
-      coupleLabel: "Juntos",
-      groomName: "Stebin",
-      brideName: "Jesna",
-      coupleName: "Stebin & Jesna",
-      groomParents: "Xavier & Teresa",
-      brideParents: "Joseph M.D. & Mary Jose",
+      title: "Meet the Couple",
+      groomLabel: "The Groom",
+      brideLabel: "The Bride",
+      coupleLabel: "Together",
+      groomName: "Abdul Azeez",
+      brideName: "Fathima Zama",
+      coupleName: "Fathima Zama & Abdul Azeez",
+      groomParents: "S/o Mr. Abdul Salam & Ayisha Bi",
+      brideParents: "D/o Hameed & Aysha Rishni",
+      scroll: "Scroll",
     },
-  }
+  };
 
   const {
     title,
@@ -55,46 +53,52 @@ export function PhotoGallery({ language }: PhotoGalleryProps) {
     coupleName,
     groomParents,
     brideParents,
-  } = content[language]
+    scroll,
+  } = content[language];
 
   const slides = [
     {
       label: groomLabel,
       name: groomName,
       subtitle: groomParents,
-      image: "/images/groom.jpeg",
-      align: "left",
+      image: "/images/zama1.jpg",
     },
     {
       label: brideLabel,
       name: brideName,
       subtitle: brideParents,
-      image: "/images/bride.jpeg",
-      align: "center",
+      image: "/images/zama2.jpg",
     },
     {
       label: coupleLabel,
       name: coupleName,
-      subtitle: "",
-      image: "/images/couple.jpeg",
-      align: "right",
+      subtitle: "Two families, one beautiful beginning",
+      image: "/images/zama3.jpg",
     },
-  ]
+  ];
 
-  const x = useTransform(scrollYProgress, [0, 1], ["0%", "-66.666%"])
+  const x = useTransform(scrollYProgress, [0, 1], ["0%", "-66.666%"]);
 
-  const groomScale = useTransform(scrollYProgress, [0, 0.15, 0.28], [0.92, 1, 0.96])
-  const groomOpacity = useTransform(scrollYProgress, [0, 0.1, 0.28, 0.34], [0.55, 1, 1, 0.72])
+  const groomScale = useTransform(scrollYProgress, [0, 0.15, 0.28], [0.94, 1, 0.96]);
+  const groomOpacity = useTransform(scrollYProgress, [0, 0.1, 0.28, 0.34], [0.7, 1, 1, 0.75]);
 
-  const brideScale = useTransform(scrollYProgress, [0.22, 0.5, 0.62], [0.92, 1, 0.96])
-  const brideOpacity = useTransform(scrollYProgress, [0.22, 0.34, 0.62, 0.7], [0.55, 1, 1, 0.72])
+  const brideScale = useTransform(scrollYProgress, [0.22, 0.5, 0.62], [0.94, 1, 0.96]);
+  const brideOpacity = useTransform(scrollYProgress, [0.22, 0.34, 0.62, 0.7], [0.7, 1, 1, 0.75]);
 
-  const coupleScale = useTransform(scrollYProgress, [0.56, 0.82, 1], [0.92, 1, 1])
-  const coupleOpacity = useTransform(scrollYProgress, [0.56, 0.72, 1], [0.55, 1, 1])
+  const coupleScale = useTransform(scrollYProgress, [0.56, 0.82, 1], [0.94, 1, 1]);
+  const coupleOpacity = useTransform(scrollYProgress, [0.56, 0.72, 1], [0.7, 1, 1]);
 
-  const groomTextY = useTransform(scrollYProgress, [0, 0.18], [40, 0])
-  const brideTextY = useTransform(scrollYProgress, [0.22, 0.5], [40, 0])
-  const coupleTextY = useTransform(scrollYProgress, [0.58, 0.84], [40, 0])
+  const groomTextY = useTransform(scrollYProgress, [0, 0.18], [34, 0]);
+  const brideTextY = useTransform(scrollYProgress, [0.22, 0.5], [34, 0]);
+  const coupleTextY = useTransform(scrollYProgress, [0.58, 0.84], [34, 0]);
+
+  const progressWidth = useTransform(scrollYProgress, [0, 1], ["0%", "100%"]);
+
+  const slideMotion = [
+    { scale: groomScale, opacity: groomOpacity, textY: groomTextY },
+    { scale: brideScale, opacity: brideOpacity, textY: brideTextY },
+    { scale: coupleScale, opacity: coupleOpacity, textY: coupleTextY },
+  ];
 
   return (
     <section
@@ -103,20 +107,24 @@ export function PhotoGallery({ language }: PhotoGalleryProps) {
       className="relative h-[320vh]"
       style={{
         background:
-          "linear-gradient(to bottom, #f8dfe6 0%, #f6e7e1 18%, #efe3db 38%, #f6ece6 60%, #f9e8ec 84%, #f7dbe3 100%)",
+          "linear-gradient(180deg, #FFF8EF 0%, #E7D2AE 10%, #171845 30%, #05062E 58%, #000018 100%)",
       }}
     >
-      {/* background */}
+      {/* Luxury Background */}
       <div className="pointer-events-none absolute inset-0 overflow-hidden">
-        <div className="absolute inset-x-0 top-0 h-32 bg-gradient-to-b from-[#f7dbe3] via-[#f5e6df]/70 to-transparent" />
-        <div className="absolute left-[7%] top-20 h-80 w-80 rounded-full bg-white/20 blur-3xl" />
-        <div className="absolute right-[8%] top-1/4 h-80 w-80 rounded-full bg-[#f7c6d9]/14 blur-3xl" />
-        <div className="absolute bottom-16 left-1/2 h-96 w-96 -translate-x-1/2 rounded-full bg-[#f4d2dc]/18 blur-3xl" />
-        <div className="absolute inset-0 bg-[radial-gradient(circle_at_top,rgba(255,255,255,0.25),transparent_38%)]" />
+        <div className="absolute inset-x-0 top-0 h-48 bg-gradient-to-b from-[#FFF8EF] via-[#D7BA89]/45 to-transparent" />
+        <div className="absolute inset-x-0 bottom-0 h-56 bg-gradient-to-t from-[#000018] via-[#05062E]/85 to-transparent" />
+
+        <div className="absolute left-[8%] top-20 h-80 w-80 rounded-full bg-[#D7BA89]/18 blur-[100px]" />
+        <div className="absolute right-[8%] top-[28%] h-96 w-96 rounded-full bg-[#FFF8EF]/10 blur-[120px]" />
+        <div className="absolute bottom-20 left-1/2 h-[30rem] w-[30rem] -translate-x-1/2 rounded-full bg-[#B8925A]/14 blur-[130px]" />
+
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_top,rgba(255,248,239,0.22),transparent_42%)]" />
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(215,186,137,0.13),transparent_60%)]" />
       </div>
 
       <div className="sticky top-0 h-screen overflow-hidden">
-        {/* title */}
+        {/* Section Title */}
         <div className="absolute inset-x-0 top-0 z-30">
           <div className="mx-auto flex w-full max-w-6xl justify-center px-4 pt-8 md:pt-10">
             <motion.div
@@ -127,17 +135,18 @@ export function PhotoGallery({ language }: PhotoGalleryProps) {
               className="text-center"
             >
               <div className="mb-4 flex items-center justify-center gap-3">
-                <div className="h-px w-14 bg-gradient-to-r from-transparent via-[#caa78d] to-transparent" />
-                <div className="h-2.5 w-2.5 rotate-45 border border-[#d7b89a]/80 bg-white/60 shadow-[0_0_12px_rgba(255,255,255,0.35)]" />
-                <div className="h-px w-14 bg-gradient-to-r from-transparent via-[#caa78d] to-transparent" />
+                <div className="h-px w-16 bg-gradient-to-r from-transparent via-[#B8925A] to-transparent" />
+                <div className="h-2.5 w-2.5 rotate-45 border border-[#D7BA89] bg-[#FFF8EF] shadow-[0_0_18px_rgba(215,186,137,0.7)]" />
+                <div className="h-px w-16 bg-gradient-to-r from-transparent via-[#B8925A] to-transparent" />
               </div>
 
               <h2
-                className="text-3xl text-[#3b2d28] sm:text-4xl md:text-5xl"
+                className="text-4xl sm:text-5xl md:text-6xl"
                 style={{
-                  fontFamily: "var(--font-script), cursive",
+                  fontFamily: "var(--font-script), 'Great Vibes', cursive",
+                  color: "#05062E",
                   textShadow:
-                    "0 1px 0 rgba(255,255,255,0.82), 0 4px 14px rgba(132,102,79,0.10)",
+                    "0 1px 0 rgba(255,255,255,0.75), 0 8px 28px rgba(0,0,0,0.18)",
                 }}
               >
                 {title}
@@ -146,183 +155,136 @@ export function PhotoGallery({ language }: PhotoGalleryProps) {
           </div>
         </div>
 
-        {/* horizontal track */}
-        <motion.div
-          className="absolute left-0 top-0 flex h-full w-[300vw]"
-          style={{ x }}
-        >
-          {/* Groom */}
-          <div className="flex h-screen w-screen items-center justify-center px-4 md:px-8">
-            <motion.div
-              style={{ scale: groomScale, opacity: groomOpacity }}
-              className="relative w-[84vw] max-w-[360px] sm:max-w-[420px] md:max-w-[500px] lg:max-w-[560px]"
-            >
+        {/* Horizontal Slides */}
+        <motion.div className="absolute left-0 top-0 flex h-full w-[300vw]" style={{ x }}>
+          {slides.map((slide, index) => {
+            const motionState = slideMotion[index];
+
+            return (
               <div
-                className="relative aspect-[4/5] overflow-hidden rounded-[2.5rem] border border-white/55 shadow-[0_30px_90px_rgba(103,83,67,0.16)]"
-                style={{
-                  background:
-                    "linear-gradient(180deg, rgba(255,255,255,0.34) 0%, rgba(255,255,255,0.16) 100%)",
-                  WebkitBackdropFilter: "blur(20px) saturate(160%)",
-                  backdropFilter: "blur(20px) saturate(160%)",
-                  boxShadow:
-                    "0 30px 90px rgba(103,83,67,0.16), inset 0 1px 0 rgba(255,255,255,0.68)",
-                }}
+                key={slide.label}
+                className="flex h-screen w-screen items-center justify-center px-4 pt-16 md:px-8 md:pt-20"
               >
-                <div className="absolute inset-0 z-[1] bg-[linear-gradient(135deg,rgba(255,255,255,0.18),rgba(255,255,255,0.03)_42%,transparent_64%)]" />
-                <div className="absolute left-6 right-6 top-0 z-[2] h-px bg-gradient-to-r from-transparent via-[#d7b89a]/65 to-transparent" />
-
-                <div className="absolute left-6 top-6 z-[2] h-6 w-6 rounded-tl border-l border-t border-[#d7b89a]/40" />
-                <div className="absolute right-6 top-6 z-[2] h-6 w-6 rounded-tr border-r border-t border-[#d7b89a]/40" />
-                <div className="absolute bottom-6 left-6 z-[2] h-6 w-6 rounded-bl border-b border-l border-[#d7b89a]/40" />
-                <div className="absolute bottom-6 right-6 z-[2] h-6 w-6 rounded-br border-b border-r border-[#d7b89a]/40" />
-
-                <Image
-                  src={slides[0].image}
-                  alt="Groom portrait"
-                  fill
-                  priority
-                  className="object-cover"
-                />
-                <div className="absolute inset-0 bg-gradient-to-t from-[#2d201c]/82 via-[#2d201c]/15 to-transparent" />
-
                 <motion.div
-                  className="absolute bottom-0 left-0 right-0 z-[2] p-6 text-center md:p-8"
-                  style={{ y: groomTextY }}
+                  style={{
+                    scale: motionState.scale,
+                    opacity: motionState.opacity,
+                  }}
+                  className="relative w-[86vw] max-w-[360px] sm:max-w-[430px] md:max-w-[500px] lg:max-w-[560px]"
                 >
-                  <p className="mb-2 text-[10px] uppercase tracking-[0.26em] text-white/75 md:text-[11px]">
-                    {slides[0].label}
-                  </p>
-                  <h3
-                    className="text-3xl text-white md:text-4xl"
-                    style={{ fontFamily: "var(--font-script), cursive" }}
+                  <div
+                    className="relative aspect-[4/5] overflow-hidden rounded-[2.4rem] border"
+                    style={{
+                      borderColor: "rgba(215,186,137,0.55)",
+                      background:
+                        "linear-gradient(180deg, rgba(255,248,239,0.20) 0%, rgba(215,186,137,0.10) 42%, rgba(5,6,46,0.40) 100%)",
+                      WebkitBackdropFilter: "blur(22px) saturate(165%)",
+                      backdropFilter: "blur(22px) saturate(165%)",
+                      boxShadow:
+                        "0 34px 100px rgba(0,0,24,0.55), inset 0 1px 0 rgba(255,248,239,0.30), inset 0 -1px 0 rgba(215,186,137,0.22)",
+                    }}
                   >
-                    {slides[0].name}
-                  </h3>
-                  <p className="mt-2 text-sm text-white/80 md:text-[15px]">
-                    {slides[0].subtitle}
-                  </p>
+                    {/* Gold Frame Light */}
+                    <div className="absolute inset-0 z-[2] rounded-[2.4rem] ring-1 ring-[#D7BA89]/30" />
+                    <div className="absolute left-6 right-6 top-0 z-[3] h-px bg-gradient-to-r from-transparent via-[#D7BA89] to-transparent" />
+                    <div className="absolute left-6 right-6 bottom-0 z-[3] h-px bg-gradient-to-r from-transparent via-[#D7BA89]/50 to-transparent" />
+
+                    {/* Corners */}
+                    <div className="absolute left-6 top-6 z-[3] h-7 w-7 rounded-tl border-l border-t border-[#D7BA89]/65" />
+                    <div className="absolute right-6 top-6 z-[3] h-7 w-7 rounded-tr border-r border-t border-[#D7BA89]/65" />
+                    <div className="absolute bottom-6 left-6 z-[3] h-7 w-7 rounded-bl border-b border-l border-[#D7BA89]/65" />
+                    <div className="absolute bottom-6 right-6 z-[3] h-7 w-7 rounded-br border-b border-r border-[#D7BA89]/65" />
+
+                    <Image
+                      src={slide.image}
+                      alt={`${slide.name} portrait`}
+                      fill
+                      priority={index === 0}
+                      sizes="(max-width: 768px) 86vw, 560px"
+                      className="object-cover"
+                    />
+
+                    {/* Strong readable overlay */}
+                    <div className="absolute inset-0 bg-gradient-to-t from-[#000018] via-[#05062E]/48 to-transparent" />
+                    <div className="absolute inset-0 bg-gradient-to-b from-[#000018]/24 via-transparent to-transparent" />
+                    <div className="absolute inset-0 bg-[radial-gradient(circle_at_top,rgba(215,186,137,0.12),transparent_45%)]" />
+
+                    {/* Text Content */}
+                    <motion.div
+                      className="absolute bottom-0 left-0 right-0 z-[4] px-6 pb-9 pt-24 text-center md:px-8 md:pb-10"
+                      style={{ y: motionState.textY }}
+                    >
+                      <p
+                        className="mb-2 text-[10px] uppercase tracking-[0.30em] md:text-[11px]"
+                        style={{
+                          color: "#D7BA89",
+                          fontWeight: 600,
+                          textShadow: "0 3px 12px rgba(0,0,0,0.75)",
+                        }}
+                      >
+                        {slide.label}
+                      </p>
+
+                      <h3
+                        className="text-4xl md:text-5xl"
+                        style={{
+                          fontFamily: "var(--font-script), 'Great Vibes', cursive",
+                          color: "#FFF8EF",
+                          textShadow:
+                            "0 0 18px rgba(215,186,137,0.35), 0 8px 28px rgba(0,0,0,0.85)",
+                        }}
+                      >
+                        {slide.name}
+                      </h3>
+
+                      {slide.subtitle && (
+                        <p
+                          className="mx-auto mt-3 max-w-sm text-sm leading-relaxed md:text-[15px]"
+                          style={{
+                            color: "rgba(255,248,239,0.88)",
+                            textShadow: "0 4px 16px rgba(0,0,0,0.85)",
+                          }}
+                        >
+                          {slide.subtitle}
+                        </p>
+                      )}
+                    </motion.div>
+                  </div>
                 </motion.div>
               </div>
-            </motion.div>
-          </div>
-
-          {/* Bride */}
-          <div className="flex h-screen w-screen items-center justify-center px-4 md:px-8">
-            <motion.div
-              style={{ scale: brideScale, opacity: brideOpacity }}
-              className="relative w-[84vw] max-w-[360px] sm:max-w-[420px] md:max-w-[500px] lg:max-w-[560px]"
-            >
-              <div
-                className="relative aspect-[4/5] overflow-hidden rounded-[2.5rem] border border-white/55 shadow-[0_30px_90px_rgba(103,83,67,0.16)]"
-                style={{
-                  background:
-                    "linear-gradient(180deg, rgba(255,255,255,0.34) 0%, rgba(255,255,255,0.16) 100%)",
-                  WebkitBackdropFilter: "blur(20px) saturate(160%)",
-                  backdropFilter: "blur(20px) saturate(160%)",
-                  boxShadow:
-                    "0 30px 90px rgba(103,83,67,0.16), inset 0 1px 0 rgba(255,255,255,0.68)",
-                }}
-              >
-                <div className="absolute inset-0 z-[1] bg-[linear-gradient(135deg,rgba(255,255,255,0.18),rgba(255,255,255,0.03)_42%,transparent_64%)]" />
-                <div className="absolute left-6 right-6 top-0 z-[2] h-px bg-gradient-to-r from-transparent via-[#d7b89a]/65 to-transparent" />
-
-                <div className="absolute left-6 top-6 z-[2] h-6 w-6 rounded-tl border-l border-t border-[#d7b89a]/40" />
-                <div className="absolute right-6 top-6 z-[2] h-6 w-6 rounded-tr border-r border-t border-[#d7b89a]/40" />
-                <div className="absolute bottom-6 left-6 z-[2] h-6 w-6 rounded-bl border-b border-l border-[#d7b89a]/40" />
-                <div className="absolute bottom-6 right-6 z-[2] h-6 w-6 rounded-br border-b border-r border-[#d7b89a]/40" />
-
-                <Image
-                  src={slides[1].image}
-                  alt="Bride portrait"
-                  fill
-                  className="object-cover"
-                />
-                <div className="absolute inset-0 bg-gradient-to-t from-[#2d201c]/82 via-[#2d201c]/15 to-transparent" />
-
-                <motion.div
-                  className="absolute bottom-0 left-0 right-0 z-[2] p-6 text-center md:p-8"
-                  style={{ y: brideTextY }}
-                >
-                  <p className="mb-2 text-[10px] uppercase tracking-[0.26em] text-white/75 md:text-[11px]">
-                    {slides[1].label}
-                  </p>
-                  <h3
-                    className="text-3xl text-white md:text-4xl"
-                    style={{ fontFamily: "var(--font-script), cursive" }}
-                  >
-                    {slides[1].name}
-                  </h3>
-                  <p className="mt-2 text-sm text-white/80 md:text-[15px]">
-                    {slides[1].subtitle}
-                  </p>
-                </motion.div>
-              </div>
-            </motion.div>
-          </div>
-
-          {/* Couple */}
-          <div className="flex h-screen w-screen items-center justify-center px-4 md:px-8">
-            <motion.div
-              style={{ scale: coupleScale, opacity: coupleOpacity }}
-              className="relative w-[84vw] max-w-[360px] sm:max-w-[420px] md:max-w-[500px] lg:max-w-[560px]"
-            >
-              <div
-                className="relative aspect-[4/5] overflow-hidden rounded-[2.5rem] border border-white/55 shadow-[0_30px_90px_rgba(103,83,67,0.16)]"
-                style={{
-                  background:
-                    "linear-gradient(180deg, rgba(255,255,255,0.34) 0%, rgba(255,255,255,0.16) 100%)",
-                  WebkitBackdropFilter: "blur(20px) saturate(160%)",
-                  backdropFilter: "blur(20px) saturate(160%)",
-                  boxShadow:
-                    "0 30px 90px rgba(103,83,67,0.16), inset 0 1px 0 rgba(255,255,255,0.68)",
-                }}
-              >
-                <div className="absolute inset-0 z-[1] bg-[linear-gradient(135deg,rgba(255,255,255,0.18),rgba(255,255,255,0.03)_42%,transparent_64%)]" />
-                <div className="absolute left-6 right-6 top-0 z-[2] h-px bg-gradient-to-r from-transparent via-[#d7b89a]/65 to-transparent" />
-
-                <div className="absolute left-6 top-6 z-[2] h-6 w-6 rounded-tl border-l border-t border-[#d7b89a]/40" />
-                <div className="absolute right-6 top-6 z-[2] h-6 w-6 rounded-tr border-r border-t border-[#d7b89a]/40" />
-                <div className="absolute bottom-6 left-6 z-[2] h-6 w-6 rounded-bl border-b border-l border-[#d7b89a]/40" />
-                <div className="absolute bottom-6 right-6 z-[2] h-6 w-6 rounded-br border-b border-r border-[#d7b89a]/40" />
-
-                <Image
-                  src={slides[2].image}
-                  alt="Couple portrait"
-                  fill
-                  className="object-cover"
-                />
-                <div className="absolute inset-0 bg-gradient-to-t from-[#2d201c]/84 via-[#2d201c]/16 to-transparent" />
-
-                <motion.div
-                  className="absolute bottom-0 left-0 right-0 z-[2] p-6 text-center md:p-8"
-                  style={{ y: coupleTextY }}
-                >
-                  <p className="mb-2 text-[10px] uppercase tracking-[0.28em] text-white/75 md:text-[11px]">
-                    {slides[2].label}
-                  </p>
-                  <h3
-                    className="text-3xl text-white md:text-5xl"
-                    style={{ fontFamily: "var(--font-script), cursive" }}
-                  >
-                    {slides[2].name}
-                  </h3>
-                </motion.div>
-              </div>
-            </motion.div>
-          </div>
+            );
+          })}
         </motion.div>
 
-        {/* progress hint */}
-        <div className="pointer-events-none absolute bottom-8 left-1/2 z-20 -translate-x-1/2 px-4 md:bottom-10">
-          <div className="flex items-center gap-2 rounded-full border border-white/45 bg-white/35 px-4 py-2 backdrop-blur-xl">
-            <span className="text-[10px] uppercase tracking-[0.26em] text-[#5b4740]">
-              Scroll
+        {/* Progress Hint */}
+        <div className="pointer-events-none absolute bottom-8 left-1/2 z-30 -translate-x-1/2 px-4 md:bottom-10">
+          <div
+            className="flex items-center gap-2 rounded-full border px-4 py-2 backdrop-blur-xl"
+            style={{
+              borderColor: "rgba(215,186,137,0.45)",
+              background:
+                "linear-gradient(180deg, rgba(5,6,46,0.72), rgba(0,0,24,0.78))",
+              boxShadow:
+                "0 16px 40px rgba(0,0,24,0.45), inset 0 1px 0 rgba(255,248,239,0.16)",
+            }}
+          >
+            <span
+              className="text-[10px] uppercase tracking-[0.26em]"
+              style={{
+                color: "#FFF8EF",
+              }}
+            >
+              {scroll}
             </span>
-            <div className="h-1 w-20 overflow-hidden rounded-full bg-[#e8d7cf]">
+
+            <div className="h-1 w-20 overflow-hidden rounded-full bg-[#FFF8EF]/18">
               <motion.div
-                className="h-full rounded-full bg-[#caa78d]"
+                className="h-full rounded-full"
                 style={{
-                  width: useTransform(scrollYProgress, [0, 1], ["0%", "100%"]),
+                  width: progressWidth,
+                  background:
+                    "linear-gradient(90deg, #B8925A 0%, #FFF8EF 50%, #D7BA89 100%)",
+                  boxShadow: "0 0 12px rgba(215,186,137,0.75)",
                 }}
               />
             </div>
@@ -330,5 +292,5 @@ export function PhotoGallery({ language }: PhotoGalleryProps) {
         </div>
       </div>
     </section>
-  )
+  );
 }
