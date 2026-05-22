@@ -37,7 +37,7 @@ export function Events({ language }: EventsProps) {
           location: "Game Party Venue",
           venue: "Celebration with Team Bride & Team Groom",
           dressCode:
-            "Team Bride: Black & Red Jersey · Team Groom: Black & White Jersey",
+            "Team Groom: Black & Red Jersey · Team Bride: Black & White Jersey",
           description:
             "Let the celebrations begin with fun, laughter, and friendly team spirit as both sides come together for an exciting game night.",
           image: "/images/zama12.jpg",
