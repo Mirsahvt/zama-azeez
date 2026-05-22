@@ -32,8 +32,8 @@ export function DressCode({ language }: DressCodeProps) {
           icon: Trophy,
           title: "Game Party",
           date: "7 June 2026",
-          dressCode: "Team Bride: Black & Red Jersey",
-          dressCodeTwo: "Team Groom: Black & White Jersey",
+          dressCode: "Team Bride: White & Black Jersey",
+          dressCodeTwo: "Team Groom: Red & Black Jersey",
           brideLook: "Sporty celebration look",
           colors: [
             { name: "Black", color: "#050505" },

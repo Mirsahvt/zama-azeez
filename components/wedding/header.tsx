@@ -89,11 +89,11 @@ export function Header({ language, onLanguageChange }: HeaderProps) {
                   >
                     <div className="flex h-10 min-w-[82px] items-center justify-center gap-2 rounded-full border border-white/38 bg-white/18 px-3">
                       <span className="text-sm font-medium tracking-[0.16em] text-[#fff8fb]">
-                        S
+                        Z
                       </span>
                       <HeartIcon />
                       <span className="text-sm font-medium tracking-[0.16em] text-[#fff8fb]">
-                        J
+                        A
                       </span>
                     </div>
                   </a>
