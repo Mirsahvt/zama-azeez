@@ -17,7 +17,7 @@ interface ContactProps {
 }
 
 export function Contact({ language }: ContactProps) {
-  const phoneNumber = "+918586010417";
+  const phoneNumber = "+918086251607";
 
   const mapUrl = "https://maps.app.goo.gl/92RkeEGmyhAFvefu6?g_st=ic";
 
