@@ -7,12 +7,12 @@ import { Header } from "@/components/wedding/header"
 import { Hero } from "@/components/wedding/hero"
 import { DateReveal } from "@/components/wedding/date-reveal"
 import { Countdown } from "@/components/wedding/countdown"
-import { OurStory } from "@/components/wedding/our-story"
+
 import { PhotoGallery } from "@/components/wedding/photo-gallery"
 import { Events } from "@/components/wedding/events"
 import { Venue } from "@/components/wedding/venue"
-import { DressCode } from "@/components/wedding/dress-code"
-import { FAQ } from "@/components/wedding/faq"
+
+
 import { Contact } from "@/components/wedding/contact"
 
 export default function WeddingInvitation() {
@@ -99,12 +99,12 @@ export default function WeddingInvitation() {
 
             <DateReveal language={language} />
             <Countdown language={language} />
-            <OurStory language={language} />
+            
             <PhotoGallery language={language} />
             <Events language={language} />
             <Venue language={language} />
-            <DressCode language={language} />
-            <FAQ language={language} />
+         
+            
             <Contact language={language} />
           </motion.div>
         )}
