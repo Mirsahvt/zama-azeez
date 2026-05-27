@@ -32,7 +32,7 @@ export function Events({ language }: EventsProps) {
         {
           icon: Trophy,
           title: "Game Party",
-          date: "7 June 2026, Saturday",
+          date: "6 June 2026, Saturday",
           time: "5:00 PM – 9:00 PM",
           location: "Game Party Venue",
           venue: "Celebration with Team Bride & Team Groom",
